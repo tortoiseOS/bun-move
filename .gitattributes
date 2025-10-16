@@ -1,0 +1,26 @@
+# Template exclusion configuration
+# Files matching these patterns will be excluded when using degit
+
+# Changeset artifacts (version management - not needed in new projects)
+.changeset/** export-ignore
+**/CHANGELOG.md export-ignore
+
+# Task artifacts
+.task/** export-ignore
+
+# Documentation artifacts
+docs/PUBLISHING.md export-ignore
+CONTRIBUTING.md export-ignore
+TEMPLATE_PROPOSAL.md export-ignore
+
+# CI/CD artifacts (let users configure their own)
+.github/workflows/publish.yml export-ignore
+
+# Local development artifacts
+.env export-ignore
+.env.local export-ignore
+
+# Build artifacts
+**/node_modules/** export-ignore
+**/build/** export-ignore
+**/.next/** export-ignore

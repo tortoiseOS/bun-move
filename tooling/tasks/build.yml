@@ -1,0 +1,40 @@
+version: '3'
+
+tasks:
+  build:all:
+    desc: Build all packages
+    cmds:
+      - task: build:move
+      - task: build:packages
+      - task: build:apps
+      - echo "✅ All builds complete"
+
+  build:move:
+    desc: Build all Move packages
+    cmds:
+      - echo "🔨 Building Move packages..."
+      - task: move:build
+
+  build:packages:
+    desc: Build TypeScript packages
+    cmds:
+      - echo "🔨 Building TypeScript packages..."
+      - bun run --filter './packages/*' build
+
+  build:apps:
+    desc: Build all applications
+    cmds:
+      - echo "🔨 Building applications..."
+      - bun run --filter './apps/*' build
+
+  build:api:
+    desc: Build API only
+    dir: apps/api
+    cmds:
+      - bun run build
+
+  build:web:
+    desc: Build web frontend only
+    dir: apps/web
+    cmds:
+      - bun run build

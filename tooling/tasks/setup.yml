@@ -1,0 +1,82 @@
+version: '3'
+
+tasks:
+  setup:
+    desc: Complete setup - install dependencies and initialize project
+    cmds:
+      - task: check-requirements
+      - task: install-deps
+      - task: setup-env
+      - task: init-sui
+      - echo "✅ Setup complete! Run 'task dev:full' to start development."
+
+  check-requirements:
+    desc: Check if required tools are installed
+    cmds:
+      - |
+        echo "🔍 Checking requirements..."
+        command -v bun >/dev/null 2>&1 || { echo "❌ Bun is not installed. Visit https://bun.sh"; exit 1; }
+        echo "✅ Bun: $(bun --version)"
+
+        command -v sui >/dev/null 2>&1 || { echo "⚠️  Sui CLI not found. Install from https://docs.sui.io/build/install"; }
+        if command -v sui >/dev/null 2>&1; then
+          echo "✅ Sui CLI: $(sui --version)"
+        fi
+
+        command -v docker >/dev/null 2>&1 || { echo "⚠️  Docker not found. Install from https://docker.com"; }
+        if command -v docker >/dev/null 2>&1; then
+          echo "✅ Docker: $(docker --version)"
+        fi
+
+  install-deps:
+    desc: Install all dependencies
+    cmds:
+      - echo "📦 Installing dependencies..."
+      - bun install
+      - echo "✅ Dependencies installed"
+
+  setup-env:
+    desc: Setup environment configuration
+    cmds:
+      - |
+        if [ ! -f .env ]; then
+          echo "📝 Creating .env file from template..."
+          cp .env.example .env
+          echo "✅ .env file created - please configure it before deploying"
+        else
+          echo "✅ .env file already exists"
+        fi
+
+  init-sui:
+    desc: Initialize Sui client configuration
+    cmds:
+      - |
+        if command -v sui >/dev/null 2>&1; then
+          echo "🔧 Initializing Sui client..."
+          sui client --version || sui client new-env --alias localnet --rpc http://localhost:9000
+          echo "✅ Sui client configured"
+        else
+          echo "⚠️  Sui CLI not found - skipping initialization"
+        fi
+
+  install-sui:
+    desc: Install Sui CLI (macOS/Linux)
+    cmds:
+      - |
+        echo "📥 Installing Sui CLI..."
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+          brew install sui
+        else
+          cargo install --locked --git https://github.com/MystenLabs/sui.git --branch mainnet sui
+        fi
+        echo "✅ Sui CLI installed: $(sui --version)"
+
+  clean-install:
+    desc: Clean install - remove node_modules and reinstall
+    cmds:
+      - echo "🧹 Cleaning node_modules..."
+      - rm -rf node_modules
+      - rm -rf apps/*/node_modules
+      - rm -rf packages/*/node_modules
+      - rm -rf .bun-cache
+      - task: install-deps

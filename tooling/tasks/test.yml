@@ -1,0 +1,41 @@
+version: '3'
+
+tasks:
+  test:all:
+    desc: Run all tests (TypeScript + Move)
+    cmds:
+      - task: test:ts
+      - task: test:move
+
+  test:ts:
+    desc: Run TypeScript tests
+    cmds:
+      - echo "🧪 Running TypeScript tests..."
+      - bun test packages/core packages/sdk packages/ai-integration
+      - echo "✅ TypeScript tests passed"
+
+  test:move:
+    desc: Run Move tests
+    cmds:
+      - echo "🧪 Running Move tests..."
+      - find packages/move -name "Move.toml" -execdir sui move test \;
+      - echo "✅ Move tests passed"
+
+  test:e2e:
+    desc: Run end-to-end tests
+    cmds:
+      - echo "🧪 Running E2E tests..."
+      - bun test tests/e2e
+      - echo "✅ E2E tests passed"
+
+  test:watch:
+    desc: Run TypeScript tests in watch mode
+    cmds:
+      - bun test --watch packages/core packages/sdk
+
+  test:coverage:
+    desc: Generate test coverage report
+    cmds:
+      - echo "📊 Generating coverage report..."
+      - bun test --coverage packages/core packages/sdk
+      - echo "✅ Coverage report generated"

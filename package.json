@@ -1,0 +1,43 @@
+{
+  "name": "bun-move",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-Native DeFi Operating System on Sui - TortoiseOS Monorepo",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "bun run --filter './packages/*' build",
+    "dev": "bun run --filter './apps/api' dev",
+    "dev:web": "bun run --filter './apps/web' dev",
+    "dev:full": "task dev:full",
+    "test": "bun test packages/core packages/sdk",
+    "test:move": "task move:test",
+    "lint": "bun run --filter './apps/*' --filter './packages/*' lint",
+    "format": "bun run --filter './apps/*' --filter './packages/*' format",
+    "deploy": "task move:deploy",
+    "clean": "task clean:all",
+    "setup": "task setup"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.10",
+    "typescript": "^5.6.2",
+    "prettier": "^3.3.3"
+  },
+  "engines": {
+    "bun": ">=1.1.0",
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "sui",
+    "move",
+    "defi",
+    "ai",
+    "tortoise-os",
+    "blockchain",
+    "web3",
+    "dapp"
+  ],
+  "license": "MIT"
+}

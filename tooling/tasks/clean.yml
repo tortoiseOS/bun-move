@@ -1,0 +1,51 @@
+version: '3'
+
+tasks:
+  clean:all:
+    desc: Clean all build artifacts and caches
+    cmds:
+      - task: clean:move
+      - task: clean:node
+      - task: clean:docker
+      - echo "✅ All artifacts cleaned"
+
+  clean:move:
+    desc: Clean Move build artifacts
+    cmds:
+      - echo "🧹 Cleaning Move artifacts..."
+      - find packages/move -type d -name "build" -exec rm -rf {} + 2>/dev/null || true
+      - find packages/move -type d -name ".movement" -exec rm -rf {} + 2>/dev/null || true
+      - echo "✅ Move artifacts cleaned"
+
+  clean:node:
+    desc: Clean Node/Bun artifacts
+    cmds:
+      - echo "🧹 Cleaning Node artifacts..."
+      - rm -rf node_modules
+      - rm -rf apps/*/node_modules
+      - rm -rf packages/*/node_modules
+      - rm -rf .bun-cache
+      - rm -rf apps/*/.next
+      - rm -rf apps/*/dist
+      - rm -rf packages/*/dist
+      - echo "✅ Node artifacts cleaned"
+
+  clean:docker:
+    desc: Clean Docker containers and volumes
+    cmds:
+      - echo "🧹 Cleaning Docker resources..."
+      - docker compose -f docker/docker-compose.yml down -v 2>/dev/null || true
+      - echo "✅ Docker resources cleaned"
+
+  clean:env:
+    desc: Remove .env file (WARNING - backup first!)
+    cmds:
+      - |
+        read -p "⚠️  This will delete .env file. Continue? (y/N) " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+          rm -f .env
+          echo "✅ .env removed"
+        else
+          echo "❌ Cancelled"
+        fi

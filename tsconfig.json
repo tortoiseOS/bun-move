@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "types": ["bun-types"],
+    "paths": {
+      "@bun-move/core": ["./packages/core/src"],
+      "@bun-move/sdk": ["./packages/sdk/src"],
+      "@bun-move/hooks": ["./packages/hooks/src"],
+      "@bun-move/components": ["./packages/components/src"],
+      "@bun-move/move": ["./packages/move"],
+      "@bun-move/ai-integration": ["./packages/ai-integration/src"],
+      "@bun-move/wallet-adapter": ["./packages/wallet-adapter/src"],
+      "@bun-move/burner-wallet": ["./packages/burner-wallet/src"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "dist", "build", "**/build"]
+}

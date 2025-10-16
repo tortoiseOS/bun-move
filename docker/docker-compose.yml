@@ -1,0 +1,121 @@
+version: '3.8'
+
+services:
+  # Sui Local Network
+  sui-node:
+    image: mysten/sui-tools:latest
+    container_name: tortoise-sui-node
+    ports:
+      - "${SUI_LOCAL_PORT:-9000}:9000"
+      - "${SUI_FAUCET_PORT:-9123}:9123"
+    command: >
+      sh -c "
+        sui genesis &&
+        sui-test-validator --epoch-duration-ms 60000
+      "
+    volumes:
+      - sui-data:/root/.sui
+    networks:
+      - tortoise-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # TortoiseOS API Backend
+  api:
+    build:
+      context: ..
+      dockerfile: apps/api/Dockerfile
+    container_name: tortoise-api
+    ports:
+      - "${API_PORT:-3001}:3001"
+    environment:
+      - NODE_ENV=development
+      - API_PORT=3001
+      - SUI_RPC_URL=http://sui-node:9000
+      - SUI_NETWORK=localnet
+      - DATABASE_URL=${DATABASE_URL:-}
+    depends_on:
+      sui-node:
+        condition: service_healthy
+    volumes:
+      - ../apps/api:/app/apps/api
+      - ../packages:/app/packages
+      - /app/node_modules
+    networks:
+      - tortoise-net
+    command: bun run dev
+
+  # TortoiseOS Web Frontend (Full-Stack only)
+  web:
+    build:
+      context: ..
+      dockerfile: apps/web/Dockerfile
+    container_name: tortoise-web
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_SUI_NETWORK=localnet
+      - NEXT_PUBLIC_SUI_RPC_URL=http://localhost:9000
+      - NEXT_PUBLIC_API_URL=http://localhost:3001
+    depends_on:
+      - api
+    volumes:
+      - ../apps/web:/app/apps/web
+      - ../packages:/app/packages
+      - /app/node_modules
+      - /app/apps/web/.next
+    networks:
+      - tortoise-net
+    command: bun run dev
+
+  # PostgreSQL (for API state management)
+  postgres:
+    image: postgres:16-alpine
+    container_name: tortoise-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=tortoise
+      - POSTGRES_PASSWORD=tortoise_dev
+      - POSTGRES_DB=tortoise_os
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - tortoise-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tortoise"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis (for caching and rate limiting)
+  redis:
+    image: redis:7-alpine
+    container_name: tortoise-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - tortoise-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  sui-data:
+    driver: local
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+
+networks:
+  tortoise-net:
+    driver: bridge

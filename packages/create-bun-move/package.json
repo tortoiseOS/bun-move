@@ -1,0 +1,29 @@
+{
+  "name": "create-bun-move",
+  "version": "0.1.0",
+  "description": "Scaffolding tool for TortoiseOS dApps on Sui",
+  "type": "module",
+  "bin": {
+    "create-bun-move": "./src/index.ts"
+  },
+  "scripts": {
+    "dev": "bun run src/index.ts",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "degit": "^2.8.4"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.10"
+  },
+  "keywords": [
+    "sui",
+    "move",
+    "scaffold",
+    "template",
+    "tortoise-os",
+    "defi",
+    "dapp"
+  ],
+  "license": "MIT"
+}

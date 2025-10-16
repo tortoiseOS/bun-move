@@ -1,0 +1,31 @@
+{
+  "name": "@bun-move/move",
+  "version": "0.1.0",
+  "description": "Sui Move smart contracts for TortoiseOS",
+  "main": "./deployedContracts.ts",
+  "types": "./deployedContracts.ts",
+  "exports": {
+    ".": {
+      "bun": "./deployedContracts.ts",
+      "import": "./deployedContracts.ts",
+      "require": "./deployedContracts.ts"
+    },
+    "./deployedContracts": {
+      "bun": "./deployedContracts.ts",
+      "import": "./deployedContracts.ts",
+      "require": "./deployedContracts.ts"
+    }
+  },
+  "scripts": {
+    "build": "task move:build",
+    "test": "task move:test",
+    "deploy": "task move:deploy"
+  },
+  "keywords": [
+    "sui",
+    "move",
+    "smart-contracts",
+    "tortoise-os"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,31 @@
+version: '3'
+
+includes:
+  setup: ./setup.yml
+  dev: ./dev.yml
+  move: ./move.yml
+  test: ./test.yml
+  build: ./build.yml
+  deploy: ./deploy.yml
+  clean: ./clean.yml
+  ai: ./ai.yml
+
+tasks:
+  default:
+    desc: Show all available tasks
+    cmds:
+      - task --list-all
+
+  hello:
+    desc: Welcome to TortoiseOS
+    cmds:
+      - echo "🐢 TortoiseOS - AI-Native DeFi Operating System on Sui"
+      - echo ""
+      - echo "Available commands:"
+      - echo "  task setup        - Install dependencies and initialize"
+      - echo "  task dev:full     - Start full development stack (Docker)"
+      - echo "  task move:build   - Build all Move modules"
+      - echo "  task move:test    - Run Move tests"
+      - echo "  task move:deploy  - Deploy contracts to network"
+      - echo ""
+      - echo "For more commands, run: task --list-all"

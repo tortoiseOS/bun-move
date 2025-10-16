@@ -1,0 +1,31 @@
+{
+  "name": "@bun-move/sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for TortoiseOS smart contracts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "bun": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "echo 'No build needed - Bun uses TypeScript directly'",
+    "test": "bun test",
+    "lint": "eslint src",
+    "format": "prettier --write src"
+  },
+  "dependencies": {
+    "@bun-move/core": "workspace:*",
+    "@mysten/sui.js": "^0.54.1"
+  },
+  "keywords": [
+    "sui",
+    "sdk",
+    "tortoise-os",
+    "defi"
+  ],
+  "license": "MIT"
+}

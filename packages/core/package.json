@@ -1,0 +1,27 @@
+{
+  "name": "@bun-move/core",
+  "version": "0.1.0",
+  "description": "Core utilities and types for TortoiseOS",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "bun": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "echo 'No build needed - Bun uses TypeScript directly'",
+    "test": "bun test",
+    "lint": "eslint src",
+    "format": "prettier --write src"
+  },
+  "keywords": [
+    "sui",
+    "move",
+    "utilities",
+    "tortoise-os"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,140 @@
+version: '3'
+
+tasks:
+  move:build:
+    desc: Build all Move packages
+    cmds:
+      - echo "🔨 Building all Move packages..."
+      - task: build-core
+      - task: build-amm
+      - task: build-vault
+      - task: build-stablecoin
+      - task: build-arb
+      - task: build-bridge
+      - task: build-rwa
+      - task: build-btcfi
+      - task: build-privacy
+      - task: build-prediction
+      - task: build-orderbook
+      - echo "✅ All Move packages built successfully"
+
+  build-core:
+    desc: Build core Move package
+    dir: packages/move/core
+    cmds:
+      - sui move build
+
+  build-amm:
+    desc: Build TortoiseSwap AMM
+    dir: packages/move/amm
+    cmds:
+      - sui move build
+
+  build-vault:
+    desc: Build TortoiseVault
+    dir: packages/move/vault
+    cmds:
+      - sui move build
+
+  build-stablecoin:
+    desc: Build TortoiseUSD
+    dir: packages/move/stablecoin
+    cmds:
+      - sui move build
+
+  build-arb:
+    desc: Build TortoiseArb
+    dir: packages/move/arb
+    cmds:
+      - sui move build
+
+  build-bridge:
+    desc: Build TortoiseBridgeX
+    dir: packages/move/bridge
+    cmds:
+      - sui move build
+
+  build-rwa:
+    desc: Build RWA Vault
+    dir: packages/move/rwa
+    cmds:
+      - sui move build
+
+  build-btcfi:
+    desc: Build BTCfi Aggregator
+    dir: packages/move/btcfi
+    cmds:
+      - sui move build
+
+  build-privacy:
+    desc: Build Privacy Vault
+    dir: packages/move/privacy
+    cmds:
+      - sui move build
+
+  build-prediction:
+    desc: Build Prediction Market
+    dir: packages/move/prediction
+    cmds:
+      - sui move build
+
+  build-orderbook:
+    desc: Build Orderbook Launcher
+    dir: packages/move/orderbook
+    cmds:
+      - sui move build
+
+  move:test:
+    desc: Run all Move tests
+    cmds:
+      - echo "🧪 Running all Move tests..."
+      - find packages/move -name "Move.toml" -execdir sui move test \;
+      - echo "✅ All Move tests passed"
+
+  move:test-core:
+    desc: Test core modules
+    dir: packages/move/core
+    cmds:
+      - sui move test
+
+  move:deploy:
+    desc: Deploy all Move packages to configured network
+    cmds:
+      - echo "🚀 Deploying TortoiseOS contracts..."
+      - task: deploy-core
+      - task: deploy-amm
+      - echo "✅ Deployment complete"
+      - task: generate-types
+
+  deploy-core:
+    desc: Deploy core modules
+    dir: packages/move/core
+    cmds:
+      - sui client publish --gas-budget 100000000
+
+  deploy-amm:
+    desc: Deploy AMM
+    dir: packages/move/amm
+    cmds:
+      - sui client publish --gas-budget 100000000
+
+  move:clean:
+    desc: Clean all Move build artifacts
+    cmds:
+      - echo "🧹 Cleaning Move build artifacts..."
+      - find packages/move -type d -name "build" -exec rm -rf {} + 2>/dev/null || true
+      - echo "✅ Move artifacts cleaned"
+
+  generate-types:
+    desc: Generate TypeScript types from Move modules
+    cmds:
+      - echo "⚙️  Generating TypeScript types from Move modules..."
+      - bun run packages/move-deployer/src/cli.ts
+      - echo "✅ Types generated"
+
+  move:format:
+    desc: Format all Move code
+    cmds:
+      - echo "✨ Formatting Move code..."
+      - find packages/move -name "*.move" -exec sui move fmt {} \;
+      - echo "✅ Move code formatted"

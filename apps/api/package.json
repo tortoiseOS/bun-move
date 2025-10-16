@@ -1,0 +1,24 @@
+{
+  "name": "@bun-move/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TortoiseOS API backend",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "build": "echo 'No build needed - Bun runtime'",
+    "start": "bun run src/index.ts",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@bun-move/core": "workspace:*",
+    "@bun-move/sdk": "workspace:*",
+    "@bun-move/ai-integration": "workspace:*",
+    "elysia": "^1.1.0",
+    "@elysiajs/cors": "^1.1.0",
+    "@elysiajs/swagger": "^1.1.0",
+    "@mysten/sui.js": "^0.54.1"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.10"
+  }
+}

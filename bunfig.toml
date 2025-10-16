@@ -1,0 +1,20 @@
+[install]
+# Auto-install peer dependencies
+auto = "auto"
+
+# Use exact versions
+exact = false
+
+# Cache directory
+cache = ".bun-cache"
+
+[install.scopes]
+# Scoped package registries can be configured here
+
+[test]
+# Test configuration
+preload = ["./test/setup.ts"]
+
+[run]
+# Runtime configuration
+bun = "latest"

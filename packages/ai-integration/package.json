@@ -1,0 +1,30 @@
+{
+  "name": "@bun-move/ai-integration",
+  "version": "0.1.0",
+  "description": "AI integration utilities for TortoiseOS (Walrus, Nautilus TEE, etc.)",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "bun": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "echo 'No build needed - Bun uses TypeScript directly'",
+    "test": "bun test",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "@bun-move/core": "workspace:*"
+  },
+  "keywords": [
+    "ai",
+    "tee",
+    "walrus",
+    "nautilus",
+    "tortoise-os"
+  ],
+  "license": "MIT"
+}

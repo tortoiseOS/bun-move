@@ -1,0 +1,14 @@
+[package]
+name = "TortoiseVault"
+version = "0.1.0"
+edition = "2024.beta"
+
+[dependencies]
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/mainnet" }
+TortoiseOSCore = { local = "../core" }
+TortoiseSwap = { local = "../amm" }
+
+[addresses]
+tortoise_vault = "0x0"
+tortoise_core = "0x0"
+tortoise_swap = "0x0"
