@@ -1,10 +1,10 @@
 /// Governance module for $LAB token holders
 module tortoise_core::governance {
-    use sui::object::{Self, UID};
+    use sui::object::UID;
     use sui::tx_context::TxContext;
-    use sui::transfer;
-    use sui::coin::{Self, Coin};
-    use sui::balance::{Self, Balance};
+
+    /// One-time witness for governance initialization
+    public struct GOVERNANCE has drop {}
 
     /// Governance token ($LAB)
     public struct LAB has drop {}
@@ -12,7 +12,6 @@ module tortoise_core::governance {
     /// Treasury for governance
     public struct Treasury has key {
         id: UID,
-        balance: Balance<LAB>,
     }
 
     /// Proposal for governance decisions
@@ -25,21 +24,7 @@ module tortoise_core::governance {
     }
 
     /// Initialize governance with treasury
-    fun init(witness: LAB, ctx: &mut TxContext) {
-        let treasury = Treasury {
-            id: object::new(ctx),
-            balance: balance::zero(),
-        };
-        transfer::share_object(treasury);
-    }
-
-    /// Stake LAB tokens for voting power
-    public entry fun stake(
-        _treasury: &mut Treasury,
-        _payment: Coin<LAB>,
-        _ctx: &mut TxContext
-    ) {
-        // TODO: Implement staking logic
-        abort 0
+    fun init(_witness: GOVERNANCE, _ctx: &mut TxContext) {
+        // TODO: Initialize treasury with coin treasury cap
     }
 }

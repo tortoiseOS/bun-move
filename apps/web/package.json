@@ -8,7 +8,11 @@
     "build": "next build",
     "start": "next start -p ${WEB_PORT:-3000}",
     "lint": "next lint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug"
   },
   "dependencies": {
     "@bun-move/core": "workspace:*",
@@ -16,6 +20,7 @@
     "@bun-move/hooks": "workspace:*",
     "@bun-move/components": "workspace:*",
     "@bun-move/burner-wallet": "workspace:*",
+    "@bun-move/ui": "workspace:*",
     "@mysten/dapp-kit": "^0.14.0",
     "@mysten/sui.js": "^0.54.1",
     "@radix-ui/themes": "^3.0.0",
@@ -25,10 +30,15 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.0",
     "@types/node": "^20.14.11",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "typescript": "^5.6.2",
-    "prettier": "^3.3.3"
+    "autoprefixer": "^10.4.21",
+    "playwright": "^1.56.0",
+    "postcss": "^8.5.6",
+    "prettier": "^3.3.3",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.6.2"
   }
 }

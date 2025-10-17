@@ -1,75 +1,75 @@
 version: '3'
 
 tasks:
-  dev:full:
+  full:
     desc: Start full development stack (Docker Compose)
     cmds:
       - echo "🚀 Starting TortoiseOS development stack..."
       - docker compose -f docker/docker-compose.yml up --build
 
-  dev:full-detached:
+  full-detached:
     desc: Start full stack in background
     cmds:
       - echo "🚀 Starting TortoiseOS in background..."
       - docker compose -f docker/docker-compose.yml up -d --build
       - echo "✅ Stack running in background"
-      - echo "   View logs: docker compose -f docker/docker-compose.yml logs -f"
-      - echo "   Stop: task dev:stop"
+      - echo "   View logs - docker compose -f docker/docker-compose.yml logs -f"
+      - echo "   Stop - task dev stop"
 
-  dev:api:
+  api:
     desc: Start API server only (requires Sui node running)
     dir: apps/api
     cmds:
       - echo "🚀 Starting TortoiseOS API..."
       - bun run dev
 
-  dev:web:
+  web:
     desc: Start web frontend only (requires API running)
     dir: apps/web
     cmds:
       - echo "🚀 Starting TortoiseOS Web..."
       - bun run dev
 
-  dev:sui:
+  sui:
     desc: Start local Sui network only
     cmds:
       - echo "🚀 Starting Sui local network..."
       - sui-test-validator --epoch-duration-ms 60000
 
-  dev:stop:
+  stop:
     desc: Stop all development services
     cmds:
       - echo "🛑 Stopping development stack..."
       - docker compose -f docker/docker-compose.yml down
       - echo "✅ Services stopped"
 
-  dev:restart:
+  restart:
     desc: Restart development stack
     cmds:
-      - task: dev:stop
-      - task: dev:full-detached
+      - task: stop
+      - task: full-detached
 
-  dev:logs:
+  logs:
     desc: Follow logs from all services
     cmds:
       - docker compose -f docker/docker-compose.yml logs -f
 
-  dev:logs-api:
+  logs-api:
     desc: Follow API logs only
     cmds:
       - docker compose -f docker/docker-compose.yml logs -f api
 
-  dev:logs-web:
+  logs-web:
     desc: Follow web logs only
     cmds:
       - docker compose -f docker/docker-compose.yml logs -f web
 
-  dev:logs-sui:
+  logs-sui:
     desc: Follow Sui node logs only
     cmds:
       - docker compose -f docker/docker-compose.yml logs -f sui-node
 
-  dev:status:
+  status:
     desc: Check status of all services
     cmds:
       - docker compose -f docker/docker-compose.yml ps

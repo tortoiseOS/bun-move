@@ -28,7 +28,9 @@ module tortoise_privacy::private_vault {
     public entry fun private_deposit(
         _vault: &mut PrivateVault,
         _encrypted_amount: vector<u8>,
-        _zk_proof: ZKBalanceProof,
+        _proof: vector<u8>,
+        _public_inputs: vector<u8>,
+        _verification_key: vector<u8>,
         _ctx: &mut TxContext
     ) {
         // TODO:
@@ -53,7 +55,9 @@ module tortoise_privacy::private_vault {
     public entry fun private_withdraw(
         _vault: &mut PrivateVault,
         _encrypted_amount: vector<u8>,
-        _zk_proof: ZKBalanceProof,
+        _proof: vector<u8>,
+        _public_inputs: vector<u8>,
+        _verification_key: vector<u8>,
         _ctx: &mut TxContext
     ) {
         // TODO: ZK proof verification + withdrawal

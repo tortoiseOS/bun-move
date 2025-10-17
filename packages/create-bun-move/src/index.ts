@@ -1,244 +1,298 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 
-/**
- * create-bun-move
- * Scaffolding CLI for TortoiseOS dApps
- * Based on bun-eth's create-bun-eth pattern
- */
+import { Command } from "commander";
+import prompts from "prompts";
+import chalk from "chalk";
+import ora from "ora";
+import { execSync } from "child_process";
+import { existsSync, mkdirSync, cpSync, writeFileSync, readFileSync } from "fs";
+import { join, resolve } from "path";
+import validateProjectName from "validate-npm-package-name";
 
-import { parseArgs } from "util";
-import { join } from "path";
-import { $ } from "bun";
-import degit from "degit";
+const program = new Command();
 
-interface CliArgs {
-  projectName?: string;
-  type?: ProjectType;
-  products?: string[];
+interface ProjectOptions {
+  name: string;
+  template?: "minimal" | "full";
+  sui?: boolean;
+  docker?: boolean;
 }
 
-type ProjectType = "full-stack" | "backend-only" | "move-only";
+program
+  .name("create-bun-move")
+  .description("Create a new TortoiseOS DeFi project on Sui")
+  .version("0.1.0")
+  .argument("[project-name]", "Name of your project")
+  .option("-t, --template <type>", "Project template (minimal|full)", "full")
+  .option("--no-sui", "Skip Sui Move contracts")
+  .option("--no-docker", "Skip Docker setup")
+  .action(async (projectName: string | undefined, options) => {
+    console.log(chalk.cyan.bold("\n🐢 Welcome to TortoiseOS!\n"));
 
-const TORTOISE_PRODUCTS = [
-  { id: "amm", name: "TortoiseSwap (AMM)", phase: 1 },
-  { id: "vault", name: "TortoiseVault (Auto-Compounder)", phase: 1 },
-  { id: "stablecoin", name: "TortoiseUSD (NFT Stablecoin)", phase: 2 },
-  { id: "arb", name: "TortoiseArb (Arbitrage Bot)", phase: 2 },
-  { id: "bridge", name: "TortoiseBridgeX (Cross-Chain)", phase: 3 },
-  { id: "rwa", name: "RWA Vault", phase: 3 },
-  { id: "btcfi", name: "BTCfi Aggregator", phase: 3 },
-  { id: "privacy", name: "Privacy Vault", phase: 4 },
-  { id: "prediction", name: "Prediction Market", phase: 4 },
-  { id: "orderbook", name: "Orderbook Launcher", phase: 4 },
-];
+    let name = projectName;
 
-async function main() {
-  console.log("🐢 TortoiseOS dApp Scaffolder\n");
+    // Prompt for project name if not provided
+    if (!name) {
+      const response = await prompts({
+        type: "text",
+        name: "name",
+        message: "What is your project name?",
+        initial: "my-tortoise-app",
+        validate: (value) => {
+          const validation = validateProjectName(value);
+          if (validation.validForNewPackages) {
+            return true;
+          }
+          return validation.errors?.[0] || "Invalid project name";
+        },
+      });
 
-  // Parse CLI args
-  const { values, positionals } = parseArgs({
-    args: Bun.argv.slice(2),
-    options: {
-      type: { type: "string", short: "t" },
-      products: { type: "string", short: "p", multiple: true },
-      help: { type: "boolean", short: "h" },
-    },
-    allowPositionals: true,
-  });
+      if (!response.name) {
+        console.log(chalk.red("\n✖ Project creation cancelled\n"));
+        process.exit(1);
+      }
 
-  if (values.help) {
-    printHelp();
-    process.exit(0);
-  }
-
-  const projectName = positionals[0] || (await promptProjectName());
-  const projectType =
-    (values.type as ProjectType) || (await promptProjectType());
-  const products =
-    values.products || (projectType === "move-only" ? await promptProducts() : []);
-
-  await scaffoldProject(projectName, projectType, products);
-}
-
-async function promptProjectName(): Promise<string> {
-  console.log("📝 Project name:");
-  const name = prompt("  Enter name (e.g., my-tortoise-dapp): ");
-  if (!name) {
-    console.error("❌ Project name is required");
-    process.exit(1);
-  }
-  return name;
-}
-
-async function promptProjectType(): Promise<ProjectType> {
-  console.log("\n📦 Select project type:\n");
-  console.log("  1) Full-Stack (API + Web + Move contracts)");
-  console.log("  2) Backend-Only (API + Move contracts)");
-  console.log("  3) Move-Only (Smart contracts only)\n");
-
-  const choice = prompt("  Choose (1-3): ");
-
-  switch (choice) {
-    case "1":
-      return "full-stack";
-    case "2":
-      return "backend-only";
-    case "3":
-      return "move-only";
-    default:
-      console.error("❌ Invalid choice");
-      process.exit(1);
-  }
-}
-
-async function promptProducts(): Promise<string[]> {
-  console.log("\n🎯 Select TortoiseOS products to include:\n");
-  console.log("  0) All products (full TortoiseOS suite)");
-
-  TORTOISE_PRODUCTS.forEach((p, i) => {
-    console.log(`  ${i + 1}) ${p.name} (Phase ${p.phase})`);
-  });
-
-  console.log();
-  const choices = prompt("  Choose (0-10, comma-separated): ");
-
-  if (choices === "0") {
-    return TORTOISE_PRODUCTS.map((p) => p.id);
-  }
-
-  const indices = choices!.split(",").map((s) => parseInt(s.trim()) - 1);
-  return indices
-    .filter((i) => i >= 0 && i < TORTOISE_PRODUCTS.length)
-    .map((i) => TORTOISE_PRODUCTS[i].id);
-}
-
-async function scaffoldProject(
-  name: string,
-  type: ProjectType,
-  products: string[]
-) {
-  const targetDir = join(process.cwd(), name);
-
-  console.log(`\n🚀 Creating ${type} project: ${name}\n`);
-
-  // Clone template via degit (respects .gitattributes)
-  console.log("📥 Downloading template...");
-  const emitter = degit("your-github-org/bun-move", {
-    cache: false,
-    force: true,
-  });
-
-  try {
-    await emitter.clone(targetDir);
-  } catch (error) {
-    console.error("❌ Failed to download template:", error);
-    // For local development, copy from current directory
-    console.log("📁 Using local template...");
-    await $`cp -r ${process.cwd()} ${targetDir}`.quiet();
-    await $`rm -rf ${targetDir}/node_modules ${targetDir}/.git`.quiet();
-  }
-
-  // Customize based on type
-  if (type === "backend-only") {
-    console.log("🗑️  Removing web frontend...");
-    await $`rm -rf ${targetDir}/apps/web`.quiet();
-    await updateWorkspaces(targetDir, ["apps/api", "packages/*"]);
-    await updateDockerCompose(targetDir, false);
-  } else if (type === "move-only") {
-    console.log("🗑️  Keeping Move contracts only...");
-    await $`rm -rf ${targetDir}/apps`.quiet();
-    await updateWorkspaces(targetDir, ["packages/move/*"]);
-  }
-
-  // Filter Move packages if specific products selected
-  if (products.length > 0 && products.length < TORTOISE_PRODUCTS.length) {
-    console.log(`🎯 Keeping selected products: ${products.join(", ")}`);
-    const allProducts = TORTOISE_PRODUCTS.map((p) => p.id);
-    const toRemove = allProducts.filter((p) => !products.includes(p));
-
-    for (const product of toRemove) {
-      await $`rm -rf ${targetDir}/packages/move/${product}`.quiet();
+      name = response.name;
     }
+
+    // Validate project name
+    const validation = validateProjectName(name);
+    if (!validation.validForNewPackages) {
+      console.error(
+        chalk.red(`\n✖ Invalid project name: ${validation.errors?.[0]}\n`)
+      );
+      process.exit(1);
+    }
+
+    const projectPath = resolve(process.cwd(), name);
+
+    // Check if directory already exists
+    if (existsSync(projectPath)) {
+      console.error(
+        chalk.red(`\n✖ Directory ${name} already exists!\n`)
+      );
+      process.exit(1);
+    }
+
+    // Prompt for configuration
+    const config = await prompts([
+      {
+        type: "select",
+        name: "template",
+        message: "Which template would you like to use?",
+        choices: [
+          { title: "Full Stack (API + Web + Move + AI)", value: "full" },
+          { title: "Minimal (Web + Move)", value: "minimal" },
+        ],
+        initial: 0,
+      },
+      {
+        type: "confirm",
+        name: "sui",
+        message: "Include Sui Move smart contracts?",
+        initial: true,
+      },
+      {
+        type: "confirm",
+        name: "docker",
+        message: "Include Docker configuration?",
+        initial: true,
+      },
+      {
+        type: "confirm",
+        name: "magicui",
+        message: "Include Magic UI components?",
+        initial: true,
+      },
+    ]);
+
+    if (!config.template) {
+      console.log(chalk.red("\n✖ Project creation cancelled\n"));
+      process.exit(1);
+    }
+
+    const spinner = ora(chalk.cyan("Creating your TortoiseOS project...")).start();
+
+    try {
+      // Create project directory
+      mkdirSync(projectPath, { recursive: true });
+
+      // Create base structure
+      createProjectStructure(projectPath, {
+        name,
+        template: config.template,
+        sui: config.sui,
+        docker: config.docker,
+        magicui: config.magicui,
+      });
+
+      spinner.succeed(chalk.green("Project created successfully!"));
+
+      // Print next steps
+      console.log(chalk.cyan("\n📦 Next steps:\n"));
+      console.log(chalk.white(`  cd ${name}`));
+      console.log(chalk.white(`  bun install`));
+      
+      if (config.docker) {
+        console.log(chalk.white(`  docker compose up -d`));
+      }
+      
+      if (config.sui) {
+        console.log(chalk.white(`  task sui:init`));
+      }
+      
+      console.log(chalk.white(`  bun run dev\n`));
+
+      console.log(chalk.cyan("🚀 Happy building with TortoiseOS!\n"));
+      console.log(chalk.gray("📖 Documentation: https://github.com/yourusername/bun-move"));
+      console.log(chalk.gray("💬 Discord: https://discord.gg/tortoise-os\n"));
+
+    } catch (error) {
+      spinner.fail(chalk.red("Failed to create project"));
+      console.error(error);
+      process.exit(1);
+    }
+  });
+
+function createProjectStructure(
+  projectPath: string,
+  options: {
+    name: string;
+    template: "minimal" | "full";
+    sui: boolean;
+    docker: boolean;
+    magicui: boolean;
+  }
+) {
+  // Create root package.json
+  const packageJson = {
+    name: options.name,
+    version: "0.1.0",
+    private: true,
+    description: "TortoiseOS DeFi project on Sui",
+    workspaces: ["apps/*", "packages/*"],
+    scripts: {
+      dev: "bun run --filter './apps/web' dev",
+      build: "bun run --filter './apps/*' build",
+      test: "bun test",
+      lint: "bun run --filter './apps/*' --filter './packages/*' lint",
+    },
+    devDependencies: {
+      "@types/bun": "^1.1.10",
+      typescript: "^5.6.2",
+      prettier: "^3.3.3",
+    },
+    engines: {
+      bun: ">=1.1.0",
+      node: ">=20.0.0",
+    },
+  };
+
+  writeFileSync(
+    join(projectPath, "package.json"),
+    JSON.stringify(packageJson, null, 2)
+  );
+
+  // Create directories
+  const dirs = [
+    "apps/web",
+    "packages/core",
+    "packages/sdk",
+  ];
+
+  if (options.template === "full") {
+    dirs.push("apps/api");
   }
 
-  // Update package.json
-  await updatePackageJson(targetDir, name);
-
-  // Initialize git
-  console.log("🔧 Initializing git repository...");
-  await $`cd ${targetDir} && git init`.quiet();
-  await $`cd ${targetDir} && git add .`.quiet();
-  await $`cd ${targetDir} && git commit -m "feat: initialize TortoiseOS project"`.quiet();
-
-  // Success message
-  console.log("\n✅ Project created successfully!\n");
-  console.log("📂 Next steps:\n");
-  console.log(`  cd ${name}`);
-  console.log(`  cp .env.example .env  # Configure environment`);
-  console.log(`  task setup            # Install dependencies`);
-  console.log(`  task dev:full         # Start development stack\n`);
-  console.log("📚 Documentation: https://github.com/your-org/bun-move\n");
-  console.log("🐢 Happy building with TortoiseOS!\n");
-}
-
-async function updateWorkspaces(targetDir: string, workspaces: string[]) {
-  const pkgPath = join(targetDir, "package.json");
-  const pkg = await Bun.file(pkgPath).json();
-  pkg.workspaces = workspaces;
-  await Bun.write(pkgPath, JSON.stringify(pkg, null, 2));
-}
-
-async function updatePackageJson(targetDir: string, name: string) {
-  const pkgPath = join(targetDir, "package.json");
-  const pkg = await Bun.file(pkgPath).json();
-  pkg.name = name;
-  await Bun.write(pkgPath, JSON.stringify(pkg, null, 2));
-}
-
-async function updateDockerCompose(targetDir: string, includeWeb: boolean) {
-  const composePath = join(targetDir, "docker/docker-compose.yml");
-  let compose = await Bun.file(composePath).text();
-
-  if (!includeWeb) {
-    // Remove web service section
-    compose = compose.replace(/# TortoiseOS Web Frontend.*?networks:\s+- tortoise-net/s, "");
+  if (options.sui) {
+    dirs.push("move/sources");
   }
 
-  await Bun.write(composePath, compose);
+  if (options.magicui) {
+    dirs.push("packages/ui");
+  }
+
+  dirs.forEach((dir) => {
+    mkdirSync(join(projectPath, dir), { recursive: true });
+  });
+
+  // Create README
+  const readme = `# ${options.name}
+
+TortoiseOS DeFi Project on Sui
+
+## Getting Started
+
+\`\`\`bash
+# Install dependencies
+bun install
+
+${options.docker ? "# Start services\ndocker compose up -d\n" : ""}
+${options.sui ? "# Initialize Sui\ntask sui:init\n" : ""}
+# Start development server
+bun run dev
+\`\`\`
+
+## Features
+
+- ✅ Next.js 14 Web App
+${options.template === "full" ? "- ✅ Express API Server\n" : ""}${options.sui ? "- ✅ Sui Move Smart Contracts\n" : ""}${options.magicui ? "- ✅ Magic UI Components\n" : ""}${options.docker ? "- ✅ Docker Configuration\n" : ""}
+## Project Structure
+
+\`\`\`
+${options.name}/
+├── apps/
+│   ├── web/          # Next.js frontend
+${options.template === "full" ? "│   └── api/          # Express API\n" : ""}├── packages/
+│   ├── core/         # Core utilities
+│   ├── sdk/          # Sui SDK wrapper
+${options.magicui ? "│   └── ui/           # Magic UI components\n" : ""}${options.sui ? "├── move/            # Sui Move contracts\n" : ""}${options.docker ? "└── docker/          # Docker configs\n" : ""}\`\`\`
+
+## Documentation
+
+- [TortoiseOS Docs](https://github.com/yourusername/bun-move)
+- [Sui Documentation](https://docs.sui.io)
+
+## License
+
+MIT
+`;
+
+  writeFileSync(join(projectPath, "README.md"), readme);
+
+  // Create .gitignore
+  const gitignore = `# Dependencies
+node_modules/
+bun.lockb
+
+# Build outputs
+.next/
+dist/
+build/
+*.log
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Sui
+${options.sui ? "build/\n.sui/\n" : ""}
+# Docker
+${options.docker ? ".docker/\n" : ""}`;
+
+  writeFileSync(join(projectPath, ".gitignore"), gitignore);
+
+  console.log(chalk.green(`\n✓ Created ${options.name}`));
 }
 
-function printHelp() {
-  console.log(`
-🐢 create-bun-move - TortoiseOS dApp Scaffolder
-
-Usage:
-  bunx create-bun-move [project-name] [options]
-
-Options:
-  -t, --type <type>         Project type (full-stack|backend-only|move-only)
-  -p, --products <ids>      TortoiseOS products to include (comma-separated)
-  -h, --help               Show this help
-
-Examples:
-  bunx create-bun-move my-dapp
-  bunx create-bun-move my-dapp -t move-only -p amm,vault
-  bunx create-bun-move my-dapp -t full-stack
-
-TortoiseOS Products:
-  amm         - TortoiseSwap (AMM with adaptive fees)
-  vault       - TortoiseVault (Auto-compounder)
-  stablecoin  - TortoiseUSD (NFT-backed stablecoin)
-  arb         - TortoiseArb (Arbitrage bot)
-  bridge      - TortoiseBridgeX (Cross-chain router)
-  rwa         - RWA Vault (Real-world assets)
-  btcfi       - BTCfi Aggregator (Bitcoin yield)
-  privacy     - Privacy Vault (Encrypted yields)
-  prediction  - Prediction Market (AI oracles)
-  orderbook   - Orderbook Launcher (CLOB)
-`);
-}
-
-main().catch((error) => {
-  console.error("❌ Error:", error);
-  process.exit(1);
-});
+program.parse();

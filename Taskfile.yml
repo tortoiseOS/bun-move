@@ -3,10 +3,14 @@ version: '3'
 dotenv: ['.env', '.env.local']
 
 includes:
-  default:
-    taskfile: ./tooling/tasks/Taskfile.yml
-    dir: .
-    flatten: true
+  setup: ./tooling/tasks/setup.yml
+  dev: ./tooling/tasks/dev.yml
+  move: ./tooling/tasks/move.yml
+  test: ./tooling/tasks/test.yml
+  build: ./tooling/tasks/build.yml
+  deploy: ./tooling/tasks/deploy.yml
+  clean: ./tooling/tasks/clean.yml
+  ai: ./tooling/tasks/ai.yml
 
 tasks:
   default:

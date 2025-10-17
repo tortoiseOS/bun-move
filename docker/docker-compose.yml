@@ -1,17 +1,15 @@
-version: '3.8'
-
 services:
   # Sui Local Network
   sui-node:
-    image: mysten/sui-tools:latest
+    image: mysten/sui-tools:testnet
     container_name: tortoise-sui-node
+    platform: linux/amd64
     ports:
       - "${SUI_LOCAL_PORT:-9000}:9000"
-      - "${SUI_FAUCET_PORT:-9123}:9123"
+      - "${SUI_FAUCET_PORT:-9123}:5003"
     command: >
       sh -c "
-        sui genesis &&
-        sui-test-validator --epoch-duration-ms 60000
+        sui start --with-faucet --epoch-duration-ms 60000
       "
     volumes:
       - sui-data:/root/.sui
@@ -21,7 +19,8 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:9000"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 30s
 
   # TortoiseOS API Backend
   api:

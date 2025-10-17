@@ -38,7 +38,10 @@ module tortoise_btcfi::btc_yield {
     /// AI agent adjusts strategy based on LSTM forecast
     public entry fun rebalance_strategy(
         _vault: &mut BTCVault,
-        _forecast: CorrelationForecast,
+        _correlation: u64,
+        _confidence: u64,
+        _optimal_strategy: u8,
+        _expected_apy_bps: u64,
         _ctx: &mut TxContext
     ) {
         // TODO:

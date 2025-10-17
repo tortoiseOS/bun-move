@@ -61,7 +61,11 @@ module tortoise_prediction::market {
     /// Resolve market with AI ensemble
     public entry fun resolve_market(
         _market: &mut Market,
-        _resolution: AIResolution,
+        _market_id: address,
+        _outcome: bool,
+        _model_votes: vector<bool>,
+        _confidence: u64,
+        _evidence: vector<vector<u8>>,
         _ctx: &mut TxContext
     ) {
         // TODO:

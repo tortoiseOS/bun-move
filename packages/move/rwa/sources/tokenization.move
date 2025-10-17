@@ -34,7 +34,10 @@ module tortoise_rwa::tokenization {
         _jurisdiction: vector<u8>,
         _valuation: u64,
         _docs: vector<vector<u8>>,
-        _audit: ProvenanceAudit,
+        _doc_analysis: vector<u8>,
+        _fraud_indicators: vector<vector<u8>>,
+        _verification_hash: vector<u8>,
+        _approved: bool,
         _ctx: &mut TxContext
     ) {
         // TODO:
@@ -47,7 +50,11 @@ module tortoise_rwa::tokenization {
     /// Re-audit asset (periodic or triggered)
     public entry fun re_audit(
         _token: &mut RWAToken,
-        _new_audit: ProvenanceAudit,
+        _valuation_usd: u64,
+        _doc_analysis: vector<u8>,
+        _fraud_indicators: vector<vector<u8>>,
+        _verification_hash: vector<u8>,
+        _approved: bool,
         _ctx: &mut TxContext
     ) {
         // TODO: Update fraud score, mark unverified if failed

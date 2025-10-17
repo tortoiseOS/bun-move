@@ -34,6 +34,13 @@ task dev:full
 # - Sui Node: http://localhost:9000
 ```
 
+> **📱 Apple Silicon Users**: Due to CPU architecture limitations, run Sui natively instead of in Docker:
+> ```bash
+> ./scripts/start-sui-local.sh  # Start Sui locally
+> docker compose -f docker/docker-compose.yml up api web postgres redis -d
+> ```
+> See [Development Guide](./docs/DEVELOPMENT.md) for detailed instructions.
+
 ## Project Structure
 
 ```
@@ -261,16 +268,21 @@ bun test tests/e2e
 ## Docker
 
 ```bash
-# Start stack
+# Start full stack (Linux/AMD64)
 docker compose -f docker/docker-compose.yml up
 
+# Start without Sui (Apple Silicon)
+docker compose -f docker/docker-compose.yml up api web postgres redis
+
 # Services:
-# - sui-node: Sui local network
+# - sui-node: Sui local network (AMD64 only)
 # - api: Elysia backend
 # - web: Next.js frontend
 # - postgres: State management
 # - redis: Caching
 ```
+
+> **⚠️ Apple Silicon Note**: The Sui Docker image doesn't support ARM64. Use `./scripts/start-sui-local.sh` to run Sui natively.
 
 ## Contributing
 

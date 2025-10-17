@@ -14,7 +14,3 @@ cache = ".bun-cache"
 [test]
 # Test configuration
 preload = ["./test/setup.ts"]
-
-[run]
-# Runtime configuration
-bun = "latest"

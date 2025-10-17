@@ -4,14 +4,11 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useSuiClient, useCurrentAccount } from "@mysten/dapp-kit";
+import type { SuiObjectDataFilter } from "@mysten/sui/client";
 
 export interface UseObjectOwnedConfig {
   address?: string;
-  filter?: {
-    StructType?: string;
-    Package?: string;
-    Module?: string;
-  };
+  filter?: SuiObjectDataFilter | null;
 }
 
 export function useObjectOwned(config: UseObjectOwnedConfig = {}) {
@@ -28,7 +25,7 @@ export function useObjectOwned(config: UseObjectOwnedConfig = {}) {
 
       const result = await client.getOwnedObjects({
         owner: address,
-        filter: config.filter,
+        filter: config.filter || undefined,
         options: {
           showContent: true,
           showType: true,

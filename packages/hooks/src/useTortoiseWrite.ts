@@ -5,10 +5,10 @@
 
 import { useState, useCallback } from "react";
 import {
-  useSignAndExecuteTransactionBlock,
+  useSignAndExecuteTransaction,
   useSuiClient,
 } from "@mysten/dapp-kit";
-import { TransactionBlock } from "@mysten/sui.js/transactions";
+import { Transaction } from "@mysten/sui/transactions";
 import { useTortoiseContract } from "./useTortoiseContract";
 import type { NetworkType } from "@bun-move/core";
 
@@ -30,7 +30,7 @@ export function useTortoiseWrite(config: UseTortoiseWriteConfig) {
   const client = useSuiClient();
   const contract = useTortoiseContract(config.contractName, config.network);
   const { mutate: signAndExecute, isPending } =
-    useSignAndExecuteTransactionBlock();
+    useSignAndExecuteTransaction();
 
   const [isConfirming, setIsConfirming] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -48,7 +48,7 @@ export function useTortoiseWrite(config: UseTortoiseWriteConfig) {
 
       try {
         setError(null);
-        const tx = new TransactionBlock();
+        const tx = new Transaction();
 
         const target = contract.buildTarget(config.module, config.functionName);
 
@@ -60,14 +60,14 @@ export function useTortoiseWrite(config: UseTortoiseWriteConfig) {
 
         signAndExecute(
           {
-            transactionBlock: tx,
+            transaction: tx,
           },
           {
             onSuccess: async (result) => {
               setIsConfirming(true);
               try {
                 // Wait for transaction to be confirmed
-                await client.waitForTransactionBlock({
+                await client.waitForTransaction({
                   digest: result.digest,
                 });
                 setIsConfirming(false);

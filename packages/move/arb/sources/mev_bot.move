@@ -32,7 +32,12 @@ module tortoise_arb::mev_bot {
     /// Execute arbitrage identified by GNN model
     public entry fun execute_arb<CoinA, CoinB>(
         _vault: &mut ArbVault,
-        _opportunity: ArbOpportunity,
+        _pool_a: address,
+        _pool_b: address,
+        _token_in: vector<u8>,
+        _token_out: vector<u8>,
+        _expected_profit: u64,
+        _confidence: u64,
         _capital: Coin<CoinA>,
         _ctx: &mut TxContext
     ) {

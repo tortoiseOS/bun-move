@@ -1,7 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Read(//Users/decebaldobrica/Projects/blockchain/**)"
+      "Read(//Users/decebaldobrica/Projects/blockchain/**)",
+      "Bash(docker:*)",
+      "Bash(task move:build-core:*)",
+      "Bash(echo:*)",
+      "Bash(bun run build:*)",
+      "Bash(bun remove:*)",
+      "Bash(bun add:*)",
+      "Bash(bun install:*)",
+      "Bash(task move:build:*)",
+      "Bash(sui move build:*)"
     ],
     "deny": [],
     "ask": []

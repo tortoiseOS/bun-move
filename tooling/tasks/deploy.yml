@@ -1,7 +1,7 @@
 version: '3'
 
 tasks:
-  deploy:localnet:
+  localnet:
     desc: Deploy to local Sui network
     cmds:
       - echo "🚀 Deploying to localnet..."
@@ -9,7 +9,7 @@ tasks:
       - task: move:deploy
       - echo "✅ Deployed to localnet"
 
-  deploy:devnet:
+  devnet:
     desc: Deploy to Sui devnet
     cmds:
       - echo "🚀 Deploying to devnet..."
@@ -17,7 +17,7 @@ tasks:
       - task: move:deploy
       - echo "✅ Deployed to devnet"
 
-  deploy:testnet:
+  testnet:
     desc: Deploy to Sui testnet
     cmds:
       - echo "🚀 Deploying to testnet..."
@@ -25,11 +25,11 @@ tasks:
       - task: move:deploy
       - echo "✅ Deployed to testnet"
 
-  deploy:mainnet:
+  mainnet:
     desc: Deploy to Sui mainnet (PRODUCTION)
     cmds:
       - |
-        echo "⚠️  WARNING: Deploying to MAINNET"
+        echo "⚠️  WARNING - Deploying to MAINNET"
         read -p "Are you sure? (yes/no) " -r
         if [[ $REPLY == "yes" ]]; then
           export SUI_NETWORK=mainnet
@@ -39,7 +39,7 @@ tasks:
           echo "❌ Deployment cancelled"
         fi
 
-  deploy:verify:
+  verify:
     desc: Verify deployed contracts on network
     cmds:
       - echo "🔍 Verifying deployed contracts..."

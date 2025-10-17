@@ -39,7 +39,11 @@ module tortoise_orderbook::clob {
     public entry fun auto_deploy_orderbook(
         _base: vector<u8>,
         _quote: vector<u8>,
-        _forecast: LiquidityForecast,
+        _pair: vector<u8>,
+        _predicted_volume_24h: u64,
+        _predicted_spread_bps: u64,
+        _confidence: u64,
+        _recommended_tick_size: u64,
         _ctx: &mut TxContext
     ) {
         // TODO:

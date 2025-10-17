@@ -1,49 +1,49 @@
 version: '3'
 
 tasks:
-  ai:setup:
+  setup:
     desc: Setup AI integration (Walrus, Nautilus, etc.)
     cmds:
       - echo "🤖 Setting up AI integration..."
-      - task: ai:check-walrus
-      - task: ai:check-nautilus
+      - task: check-walrus
+      - task: check-nautilus
       - echo "✅ AI integration setup complete"
 
-  ai:check-walrus:
+  check-walrus:
     desc: Check Walrus storage connection
     cmds:
       - |
         if [ -z "$WALRUS_ENDPOINT" ]; then
           echo "⚠️  WALRUS_ENDPOINT not configured in .env"
         else
-          echo "✅ Walrus endpoint: $WALRUS_ENDPOINT"
+          echo "✅ Walrus endpoint $WALRUS_ENDPOINT"
         fi
 
-  ai:check-nautilus:
+  check-nautilus:
     desc: Check Nautilus TEE connection
     cmds:
       - |
         if [ -z "$NAUTILUS_TEE_ENDPOINT" ]; then
           echo "⚠️  NAUTILUS_TEE_ENDPOINT not configured in .env"
         else
-          echo "✅ Nautilus TEE endpoint: $NAUTILUS_TEE_ENDPOINT"
+          echo "✅ Nautilus TEE endpoint $NAUTILUS_TEE_ENDPOINT"
         fi
 
-  ai:test-model:
+  test-model:
     desc: Test AI model integration
     cmds:
       - echo "🧪 Testing AI model integration..."
       - bun run packages/ai-integration/src/test-model.ts
       - echo "✅ AI model test complete"
 
-  ai:train:
+  train:
     desc: Train AI models (requires configured environment)
     cmds:
       - echo "🎓 Starting AI model training..."
       - echo "⚠️  This is a placeholder - implement your training pipeline"
       - echo "   See packages/ai-integration/README.md for details"
 
-  ai:deploy-tee:
+  deploy-tee:
     desc: Deploy AI agent to Nautilus TEE
     cmds:
       - echo "🚀 Deploying AI agent to TEE..."

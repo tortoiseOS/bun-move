@@ -36,7 +36,9 @@ module tortoise_usd::nft_collateral {
     public entry fun deposit_nft_mint(
         _vault: &mut CollateralVault,
         _nft_id: address,
-        _valuation: AIValuation,
+        _value_usd: u64,
+        _proof_hash: vector<u8>,
+        _confidence: u64,
         _ctx: &mut TxContext
     ) {
         // TODO:
@@ -62,7 +64,9 @@ module tortoise_usd::nft_collateral {
     public entry fun liquidate(
         _vault: &mut CollateralVault,
         _nft_id: address,
-        _new_valuation: AIValuation,
+        _new_value_usd: u64,
+        _new_proof_hash: vector<u8>,
+        _new_confidence: u64,
         _ctx: &mut TxContext
     ) {
         // TODO: Verify updated valuation, auction NFT

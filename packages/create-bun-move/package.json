@@ -1,29 +1,51 @@
 {
   "name": "create-bun-move",
   "version": "0.1.0",
-  "description": "Scaffolding tool for TortoiseOS dApps on Sui",
+  "description": "CLI to create new TortoiseOS DeFi projects on Sui",
   "type": "module",
   "bin": {
-    "create-bun-move": "./src/index.ts"
+    "create-bun-move": "./dist/index.js"
   },
+  "files": [
+    "dist",
+    "templates"
+  ],
   "scripts": {
+    "build": "bun build src/index.ts --outdir dist --target node --format esm",
     "dev": "bun run src/index.ts",
-    "test": "bun test"
-  },
-  "dependencies": {
-    "degit": "^2.8.4"
-  },
-  "devDependencies": {
-    "@types/bun": "^1.1.10"
+    "prepublishOnly": "bun run build"
   },
   "keywords": [
     "sui",
     "move",
-    "scaffold",
-    "template",
-    "tortoise-os",
     "defi",
-    "dapp"
+    "web3",
+    "tortoise-os",
+    "blockchain",
+    "cli",
+    "generator"
   ],
-  "license": "MIT"
+  "dependencies": {
+    "commander": "^11.1.0",
+    "prompts": "^2.4.2",
+    "chalk": "^5.3.0",
+    "ora": "^8.0.1",
+    "validate-npm-package-name": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/prompts": "^2.4.9",
+    "@types/validate-npm-package-name": "^4.0.2",
+    "typescript": "^5.6.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "bun": ">=1.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/bun-move.git",
+    "directory": "packages/create-bun-move"
+  },
+  "license": "MIT",
+  "author": "TortoiseOS Team"
 }

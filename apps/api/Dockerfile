@@ -1,15 +1,14 @@
 FROM oven/bun:1 as base
 WORKDIR /app
 
-# Install dependencies
+# Copy package files
 COPY package.json bun.lockb ./
-COPY apps/api/package.json ./apps/api/
-COPY packages/*/package.json ./packages/
+COPY tsconfig.json ./
+COPY packages ./packages
+COPY apps/api ./apps/api
 
-RUN bun install --frozen-lockfile
-
-# Copy source
-COPY . .
+# Install dependencies
+RUN bun install
 
 # Run API
 WORKDIR /app/apps/api

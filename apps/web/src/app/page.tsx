@@ -10,26 +10,49 @@ import {
   VaultCard,
   StablecoinCard,
 } from "@bun-move/components";
+import {
+  NumberTicker,
+  SparklesText,
+  RetroGrid,
+  Particles,
+  BlurFade,
+  BorderBeam,
+} from "@bun-move/ui";
 
 export default function Home() {
   const account = useCurrentAccount();
 
   return (
-    <Container size="4" style={{ padding: "2rem" }}>
-      <Flex direction="column" gap="8">
-        {/* Header */}
-        <Flex justify="between" align="center">
-          <Flex direction="column" gap="2">
-            <Heading size="8">🐢 TortoiseOS</Heading>
-            <Text size="3" color="gray">
-              AI-Native DeFi Operating System on Sui
-            </Text>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Background Effects */}
+      <RetroGrid className="opacity-30" />
+      <Particles
+        className="absolute inset-0"
+        quantity={50}
+        staticity={50}
+      />
+
+      <Container size="4" style={{ padding: "2rem", position: "relative", zIndex: 10 }}>
+        <Flex direction="column" gap="8">
+          {/* Header */}
+          <Flex justify="between" align="center">
+            <Flex direction="column" gap="2">
+              <div className="flex items-center gap-4">
+                <SparklesText
+                  text="🐢 TortoiseOS"
+                  className="text-5xl font-bold"
+                  colors={{ first: "#60a5fa", second: "#8b5cf6" }}
+                />
+              </div>
+              <Text size="3" color="gray">
+                AI-Native DeFi Operating System on Sui
+              </Text>
+            </Flex>
+            <Flex gap="3" align="center">
+              <NetworkBadge network="localnet" />
+              <WalletButton />
+            </Flex>
           </Flex>
-          <Flex gap="3" align="center">
-            <NetworkBadge network="localnet" />
-            <WalletButton />
-          </Flex>
-        </Flex>
 
         {/* Account Info */}
         {account && (
@@ -43,12 +66,14 @@ export default function Home() {
           <Flex direction="column" gap="4">
             <Heading size="6">TortoiseOS Products</Heading>
             <Text color="gray">
-              10 AI-powered DeFi products on Sui. Connect your wallet to start.
+              <NumberTicker value={10} /> AI-powered DeFi products on Sui. Connect your wallet to start.
             </Text>
 
             <Grid columns={{ initial: "1", sm: "2", md: "3" }} gap="4">
-              {PRODUCTS.map((product) => (
-                <ProductCard key={product.id} product={product} />
+              {PRODUCTS.map((product, index) => (
+                <BlurFade key={product.id} delay={0.1 + index * 0.05} inView>
+                  <ProductCard product={product} />
+                </BlurFade>
               ))}
             </Grid>
           </Flex>
@@ -111,8 +136,9 @@ export default function Home() {
             </Flex>
           </Flex>
         </Section>
-      </Flex>
-    </Container>
+        </Flex>
+      </Container>
+    </div>
   );
 }
 
@@ -125,31 +151,35 @@ function ProductCard({ product }: { product: typeof PRODUCTS[0] }) {
   } as const;
 
   return (
-    <Box
-      p="4"
-      style={{
-        border: "1px solid var(--gray-a6)",
-        borderRadius: "8px",
-        background: "var(--gray-a2)",
-      }}
-    >
-      <Flex direction="column" gap="2">
-        <Flex justify="between" align="center">
-          <Text weight="bold" size="3">
-            {product.name}
+    <div className="relative group">
+      <Box
+        p="4"
+        className="relative overflow-hidden transition-all duration-300 hover:scale-[1.02]"
+        style={{
+          border: "1px solid var(--gray-a6)",
+          borderRadius: "8px",
+          background: "var(--gray-a2)",
+        }}
+      >
+        <BorderBeam size={100} duration={12} delay={product.phase * 2} />
+        <Flex direction="column" gap="2">
+          <Flex justify="between" align="center">
+            <Text weight="bold" size="3">
+              {product.name}
+            </Text>
+            <Text size="1" color={phaseColors[product.phase]}>
+              Phase {product.phase}
+            </Text>
+          </Flex>
+          <Text size="2" color="gray">
+            {product.description}
           </Text>
-          <Text size="1" color={phaseColors[product.phase]}>
-            Phase {product.phase}
+          <Text size="1" color="blue">
+            🤖 {product.ai}
           </Text>
         </Flex>
-        <Text size="2" color="gray">
-          {product.description}
-        </Text>
-        <Text size="1" color="blue">
-          🤖 {product.ai}
-        </Text>
-      </Flex>
-    </Box>
+      </Box>
+    </div>
   );
 }
 

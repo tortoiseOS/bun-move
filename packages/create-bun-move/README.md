@@ -1,74 +1,175 @@
 # create-bun-move
 
-Scaffolding tool for creating TortoiseOS dApps on Sui.
+CLI tool to create new TortoiseOS DeFi projects on Sui blockchain.
 
-## Usage
-
-```bash
-# Interactive mode
-bunx create-bun-move my-tortoise-dapp
-
-# Full-stack mode
-bunx create-bun-move my-dapp -t full-stack
-
-# Backend-only mode
-bunx create-bun-move my-dapp -t backend-only
-
-# Move contracts only with specific products
-bunx create-bun-move my-dapp -t move-only -p amm,vault
-```
-
-## Project Types
-
-### Full-Stack
-- **Includes**: API + Web + Move contracts
-- **Use case**: Complete dApp with frontend
-- **Stack**: Elysia API, Next.js frontend, Sui Move contracts
-
-### Backend-Only
-- **Includes**: API + Move contracts
-- **Use case**: API-only service or bot
-- **Stack**: Elysia API, Sui Move contracts
-
-### Move-Only
-- **Includes**: Move contracts only
-- **Use case**: Pure smart contract development
-- **Stack**: Sui Move contracts
-
-## TortoiseOS Products
-
-Select which TortoiseOS products to include:
-
-| Product | Description | Phase |
-|---------|-------------|-------|
-| `amm` | TortoiseSwap - AI-powered AMM | 1 |
-| `vault` | TortoiseVault - Auto-compounder | 1 |
-| `stablecoin` | TortoiseUSD - NFT-backed stablecoin | 2 |
-| `arb` | TortoiseArb - Arbitrage bot | 2 |
-| `bridge` | TortoiseBridgeX - Cross-chain router | 3 |
-| `rwa` | RWA Vault - Tokenized real-world assets | 3 |
-| `btcfi` | BTCfi Aggregator - Bitcoin yield | 3 |
-| `privacy` | Privacy Vault - Encrypted yields | 4 |
-| `prediction` | Prediction Market - AI oracles | 4 |
-| `orderbook` | Orderbook Launcher - CLOB | 4 |
-
-## After Scaffolding
+## 🚀 Quick Start
 
 ```bash
-cd my-tortoise-dapp
-cp .env.example .env      # Configure environment
-task setup                # Install dependencies
-task dev:full             # Start development stack
+# Using bunx (recommended)
+bunx create-bun-move my-tortoise-app
+
+# Or using npm
+npx create-bun-move my-tortoise-app
+
+# With options
+bunx create-bun-move my-app -t minimal --no-docker
 ```
 
-## Features
+## 📖 Usage
 
-- **Bun-native**: No transpilation, fast execution
-- **AI-ready**: Built-in Walrus + Nautilus TEE integration
-- **Hot reload**: Move contracts auto-generate TypeScript types
-- **Docker Compose**: Full local development stack
-- **Task automation**: Comprehensive task runner
+### Interactive Mode
 
-## License
+```bash
+bunx create-bun-move
+```
 
-MIT
+You'll be prompted for:
+- Project name
+- Template (Full Stack or Minimal)
+- Sui Move contracts (Yes/No)
+- Docker configuration (Yes/No)
+- Magic UI components (Yes/No)
+
+### Command Line Options
+
+```bash
+create-bun-move [project-name] [options]
+
+Arguments:
+  project-name           Name of your project
+
+Options:
+  -V, --version          output the version number
+  -t, --template <type>  Project template (minimal|full) (default: "full")
+  --no-sui               Skip Sui Move contracts
+  --no-docker            Skip Docker setup
+  -h, --help             display help for command
+```
+
+### Examples
+
+```bash
+# Full stack project with all features
+bunx create-bun-move my-defi-app
+
+# Minimal project without Docker
+bunx create-bun-move simple-app -t minimal --no-docker
+
+# Web-only project without Move contracts
+bunx create-bun-move frontend-app --no-sui
+```
+
+## 🎯 Templates
+
+### Full Stack Template
+Includes:
+- ✅ Next.js 14 Web App
+- ✅ Express API Server  
+- ✅ Sui Move Smart Contracts
+- ✅ Magic UI Components
+- ✅ Docker Configuration
+- ✅ AI Integration Ready
+
+### Minimal Template
+Includes:
+- ✅ Next.js 14 Web App
+- ✅ Sui Move Smart Contracts
+- ✅ Basic UI Components
+
+## 📦 What Gets Created
+
+```
+my-tortoise-app/
+├── apps/
+│   ├── web/          # Next.js frontend
+│   └── api/          # Express API (full template)
+├── packages/
+│   ├── core/         # Core utilities
+│   ├── sdk/          # Sui SDK wrapper
+│   └── ui/           # Magic UI components
+├── move/             # Sui Move contracts
+├── docker/           # Docker configs (if enabled)
+├── package.json
+└── README.md
+```
+
+## 🛠️ After Creation
+
+```bash
+cd my-tortoise-app
+
+# Install dependencies
+bun install
+
+# Start Docker services (if enabled)
+docker compose up -d
+
+# Initialize Sui (if included)
+task sui:init
+
+# Start development server
+bun run dev
+```
+
+The app will be running at http://localhost:3000
+
+## 🔧 Development
+
+```bash
+# Start web app
+bun run dev
+
+# Build for production
+bun run build
+
+# Run tests
+bun test
+
+# Lint code
+bun run lint
+```
+
+## 🌐 Features
+
+### DeFi Products Included
+- 🔄 TortoiseSwap - AI-powered AMM
+- 💰 TortoiseVault - Auto-compounding yield
+- 💵 TortoiseUSD - NFT-backed stablecoin
+- 📊 And 7 more DeFi protocols!
+
+### Tech Stack
+- **Frontend**: Next.js 14, React 18, TypeScript
+- **Styling**: Tailwind CSS, Radix UI, Magic UI
+- **Blockchain**: Sui, Move Language
+- **Package Manager**: Bun
+- **Containerization**: Docker (optional)
+
+## 🎨 Magic UI Components
+
+If you enable Magic UI, you get:
+- ✨ Animated backgrounds (RetroGrid, Particles)
+- 🎯 Text animations (SparklesText, HyperText)
+- 🎨 Interactive components (BorderBeam, BlurFade)
+- 🌈 Beautiful buttons (RainbowButton, ShimmerButton)
+
+## 📚 Documentation
+
+- [TortoiseOS Documentation](https://github.com/yourusername/bun-move)
+- [Sui Documentation](https://docs.sui.io)
+- [Move Language Guide](https://move-book.com)
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](../../CONTRIBUTING.md).
+
+## 📄 License
+
+MIT © TortoiseOS Team
+
+## 🐢 About TortoiseOS
+
+TortoiseOS is an AI-Native DeFi Operating System built on Sui blockchain. It provides a complete suite of DeFi products powered by machine learning and artificial intelligence.
+
+---
+
+**Created with 🐢 by the TortoiseOS team**

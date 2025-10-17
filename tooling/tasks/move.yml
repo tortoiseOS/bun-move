@@ -1,7 +1,7 @@
 version: '3'
 
 tasks:
-  move:build:
+  build:
     desc: Build all Move packages
     cmds:
       - echo "🔨 Building all Move packages..."
@@ -84,20 +84,20 @@ tasks:
     cmds:
       - sui move build
 
-  move:test:
+  test:
     desc: Run all Move tests
     cmds:
       - echo "🧪 Running all Move tests..."
       - find packages/move -name "Move.toml" -execdir sui move test \;
       - echo "✅ All Move tests passed"
 
-  move:test-core:
+  test-core:
     desc: Test core modules
     dir: packages/move/core
     cmds:
       - sui move test
 
-  move:deploy:
+  deploy:
     desc: Deploy all Move packages to configured network
     cmds:
       - echo "🚀 Deploying TortoiseOS contracts..."
@@ -118,7 +118,7 @@ tasks:
     cmds:
       - sui client publish --gas-budget 100000000
 
-  move:clean:
+  clean:
     desc: Clean all Move build artifacts
     cmds:
       - echo "🧹 Cleaning Move build artifacts..."
@@ -132,7 +132,7 @@ tasks:
       - bun run packages/move-deployer/src/cli.ts
       - echo "✅ Types generated"
 
-  move:format:
+  format:
     desc: Format all Move code
     cmds:
       - echo "✨ Formatting Move code..."

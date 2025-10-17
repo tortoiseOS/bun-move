@@ -30,7 +30,11 @@ module tortoise_bridge::cross_chain_router {
     public entry fun bridge_tokens(
         _amount: u64,
         _dest_chain: vector<u8>,
-        _route: BridgeRoute,
+        _source_chain: vector<u8>,
+        _bridges: vector<address>,
+        _estimated_time_sec: u64,
+        _estimated_fee: u64,
+        _safety_score: u64,
         _ctx: &mut TxContext
     ) {
         // TODO:

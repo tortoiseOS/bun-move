@@ -1,15 +1,15 @@
 version: '3'
 
 tasks:
-  clean:all:
+  all:
     desc: Clean all build artifacts and caches
     cmds:
-      - task: clean:move
-      - task: clean:node
-      - task: clean:docker
+      - task: move
+      - task: node
+      - task: docker
       - echo "✅ All artifacts cleaned"
 
-  clean:move:
+  move:
     desc: Clean Move build artifacts
     cmds:
       - echo "🧹 Cleaning Move artifacts..."
@@ -17,7 +17,7 @@ tasks:
       - find packages/move -type d -name ".movement" -exec rm -rf {} + 2>/dev/null || true
       - echo "✅ Move artifacts cleaned"
 
-  clean:node:
+  node:
     desc: Clean Node/Bun artifacts
     cmds:
       - echo "🧹 Cleaning Node artifacts..."
@@ -30,14 +30,14 @@ tasks:
       - rm -rf packages/*/dist
       - echo "✅ Node artifacts cleaned"
 
-  clean:docker:
+  docker:
     desc: Clean Docker containers and volumes
     cmds:
       - echo "🧹 Cleaning Docker resources..."
       - docker compose -f docker/docker-compose.yml down -v 2>/dev/null || true
       - echo "✅ Docker resources cleaned"
 
-  clean:env:
+  env:
     desc: Remove .env file (WARNING - backup first!)
     cmds:
       - |
