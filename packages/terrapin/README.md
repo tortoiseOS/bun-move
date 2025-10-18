@@ -17,19 +17,19 @@ Testing Sui dApps is different from Ethereum dApps:
 
 ## Features
 
-✅ **Easy wallet connection testing** - Connect/disconnect with one line
-✅ **Transaction helpers** - Wait for transactions, check status
-✅ **Transaction Builders** - Fluent API for complex multi-step transactions
-✅ **Event Listening** - Wait for and verify blockchain events
-✅ **Network Mocking** - Mock RPC responses for deterministic tests
-✅ **Network detection** - Verify correct network (localnet/devnet/etc)
-✅ **Custom Matchers** - Sui-specific assertions for cleaner tests
-✅ **Pre-configured Test Wallets** - Realistic wallet presets (whale, normie, empty, etc)
-✅ **CI/CD Templates** - Ready-to-use GitHub Actions & GitLab CI configs
-✅ **TypeScript support** - Full type safety and IDE autocomplete
-✅ **Works with @mysten/dapp-kit** - Uses official unsafe burner wallet
-✅ **Zero configuration** - Just install and use
-✅ **Production-ready** - Used in TortoiseOS DeFi suite
+- ✅ **Easy wallet connection testing** - Connect/disconnect with one line
+- ✅ **Transaction helpers** - Wait for transactions, check status
+- ✅ **Transaction Builders** - Fluent API for complex multi-step transactions
+- ✅ **Event Listening** - Wait for and verify blockchain events
+- ✅ **Network Mocking** - Mock RPC responses for deterministic tests
+- ✅ **Network detection** - Verify correct network (localnet/devnet/etc)
+- ✅ **Custom Matchers** - Sui-specific assertions for cleaner tests
+- ✅ **Pre-configured Test Wallets** - Realistic wallet presets (whale, normie, empty, etc)
+- ✅ **CI/CD Templates** - Ready-to-use GitHub Actions & GitLab CI configs
+- ✅ **TypeScript support** - Full type safety and IDE autocomplete
+- ✅ **Works with @mysten/dapp-kit** - Uses official unsafe burner wallet
+- ✅ **Zero configuration** - Just install and use
+- ✅ **Production-ready** - Used in TortoiseOS DeFi suite
 
 ---
 
