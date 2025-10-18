@@ -55,6 +55,7 @@
 - [x] `@bun-move/hooks` - React hooks for Sui
 - [x] `@bun-move/components` - Reusable React components
 - [x] `@bun-move/burner-wallet` - Development wallet
+- [x] `@bun-move/sui-playwright` - Playwright testing utilities for Sui
 
 #### 7. **Move Smart Contracts** (`packages/move`)
 - [x] Core governance contracts (`core`)
@@ -336,6 +337,7 @@ bun run dev
 | `@bun-move/ui` | 0.1.0 | Magic UI components | ✅ Ready |
 | `@bun-move/hooks` | 0.1.0 | React hooks | ✅ Ready |
 | `@bun-move/components` | 0.1.0 | React components | ✅ Ready |
+| `@bun-move/sui-playwright` | 0.1.0 | Sui Playwright testing utils | ✅ Ready |
 
 ---
 

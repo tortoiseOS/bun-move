@@ -1,4 +1,4 @@
-# @bun-move/ai-integration
+# @tortoise-os/ai-integration
 
 AI/TEE integration package for TortoiseOS.
 
@@ -13,7 +13,7 @@ AI/TEE integration package for TortoiseOS.
 ### Walrus Storage
 
 ```typescript
-import { createWalrusClient } from "@bun-move/ai-integration";
+import { createWalrusClient } from "@tortoise-os/ai-integration";
 
 const walrus = createWalrusClient({
   endpoint: process.env.WALRUS_ENDPOINT!,
@@ -30,7 +30,7 @@ const weights = await walrus.retrieveModelWeights(hash);
 ### Nautilus TEE
 
 ```typescript
-import { createNautilusClient } from "@bun-move/ai-integration";
+import { createNautilusClient } from "@tortoise-os/ai-integration";
 
 const nautilus = createNautilusClient({
   endpoint: process.env.NAUTILUS_TEE_ENDPOINT!,

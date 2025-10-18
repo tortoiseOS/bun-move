@@ -1,6 +1,6 @@
 {
   "name": "@bun-move/api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "TortoiseOS API backend",
   "scripts": {
@@ -10,9 +10,9 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@bun-move/core": "workspace:*",
-    "@bun-move/sdk": "workspace:*",
-    "@bun-move/ai-integration": "workspace:*",
+    "@tortoise-os/core": "workspace:*",
+    "@tortoise-os/sdk": "workspace:*",
+    "@tortoise-os/ai-integration": "workspace:*",
     "elysia": "^1.1.0",
     "@elysiajs/cors": "^1.1.0",
     "@elysiajs/swagger": "^1.1.0",

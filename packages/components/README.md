@@ -1,11 +1,11 @@
-# @bun-move/components
+# @tortoise-os/components
 
 Beautiful, reusable UI components for Sui dApps built with Radix UI.
 
 ## Installation
 
 ```bash
-bun add @bun-move/components
+bun add @tortoise-os/components
 ```
 
 ## Core Components
@@ -15,7 +15,7 @@ bun add @bun-move/components
 Display Sui addresses with formatting, copy, and explorer link.
 
 ```typescript
-import { Address } from "@bun-move/components";
+import { Address } from "@tortoise-os/components";
 
 <Address
   address="0xabc123..."
@@ -31,7 +31,7 @@ import { Address } from "@bun-move/components";
 Display token balances with auto-refresh.
 
 ```typescript
-import { Balance, MultiBalance } from "@bun-move/components";
+import { Balance, MultiBalance } from "@tortoise-os/components";
 
 // Single balance
 <Balance
@@ -56,7 +56,7 @@ import { Balance, MultiBalance } from "@bun-move/components";
 Display current network status.
 
 ```typescript
-import { NetworkBadge } from "@bun-move/components";
+import { NetworkBadge } from "@tortoise-os/components";
 
 <NetworkBadge network="localnet" />
 // Colors: localnet=gray, devnet=blue, testnet=orange, mainnet=green
@@ -67,7 +67,7 @@ import { NetworkBadge } from "@bun-move/components";
 Button with loading states for transactions.
 
 ```typescript
-import { TransactionButton } from "@bun-move/components";
+import { TransactionButton } from "@tortoise-os/components";
 
 <TransactionButton
   onClick={handleSwap}
@@ -85,7 +85,7 @@ import { TransactionButton } from "@bun-move/components";
 Display Sui objects with all details.
 
 ```typescript
-import { ObjectDisplay } from "@bun-move/components";
+import { ObjectDisplay } from "@tortoise-os/components";
 
 <ObjectDisplay objectId="0xabc123..." />
 ```
@@ -97,7 +97,7 @@ import { ObjectDisplay } from "@bun-move/components";
 Display AMM pool information.
 
 ```typescript
-import { PoolCard } from "@bun-move/components";
+import { PoolCard } from "@tortoise-os/components";
 
 <PoolCard
   poolId="0xabc..."
@@ -117,7 +117,7 @@ Features:
 Display yield vault information.
 
 ```typescript
-import { VaultCard } from "@bun-move/components";
+import { VaultCard } from "@tortoise-os/components";
 
 <VaultCard
   vaultId="0xabc..."
@@ -138,7 +138,7 @@ Features:
 Display NFT collateral vault.
 
 ```typescript
-import { StablecoinCard } from "@bun-move/components";
+import { StablecoinCard } from "@tortoise-os/components";
 
 <StablecoinCard vaultId="0xabc..." />
 ```
@@ -158,7 +158,7 @@ Features:
 Enhanced wallet connection button.
 
 ```typescript
-import { WalletButton, CustomWalletButton } from "@bun-move/components";
+import { WalletButton, CustomWalletButton } from "@tortoise-os/components";
 
 // Default dApp Kit button
 <WalletButton />
@@ -175,7 +175,7 @@ import { WalletButton, CustomWalletButton } from "@bun-move/components";
 Complete account information panel.
 
 ```typescript
-import { AccountInfo } from "@bun-move/components";
+import { AccountInfo } from "@tortoise-os/components";
 
 <AccountInfo />
 ```
@@ -192,7 +192,7 @@ Shows:
 Copy text to clipboard.
 
 ```typescript
-import { CopyButton } from "@bun-move/components";
+import { CopyButton } from "@tortoise-os/components";
 
 <CopyButton text="0xabc123..." />
 ```
@@ -202,7 +202,7 @@ import { CopyButton } from "@bun-move/components";
 Link to Sui Explorer.
 
 ```typescript
-import { ExplorerLink } from "@bun-move/components";
+import { ExplorerLink } from "@tortoise-os/components";
 
 <ExplorerLink address="0xabc..." />
 <ExplorerLink objectId="0xdef..." />
@@ -214,7 +214,7 @@ import { ExplorerLink } from "@bun-move/components";
 Loading state indicator.
 
 ```typescript
-import { LoadingSpinner } from "@bun-move/components";
+import { LoadingSpinner } from "@tortoise-os/components";
 
 <LoadingSpinner message="Loading pools..." size="3" />
 ```
@@ -241,7 +241,7 @@ import {
   WalletButton,
   AccountInfo,
   NetworkBadge,
-} from "@bun-move/components";
+} from "@tortoise-os/components";
 import { Flex, Container } from "@radix-ui/themes";
 
 function Dashboard() {
@@ -285,7 +285,7 @@ import type {
   BalanceProps,
   PoolCardProps,
   VaultCardProps,
-} from "@bun-move/components";
+} from "@tortoise-os/components";
 ```
 
 ## Customization

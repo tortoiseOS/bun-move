@@ -1,0 +1,62 @@
+{
+  "name": "@tortoise-os/terrapin",
+  "version": "0.3.0",
+  "description": "Where tortoises meet the water - Playwright testing utilities for Sui blockchain dApps",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "templates",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test src/__tests__"
+  },
+  "keywords": [
+    "sui",
+    "blockchain",
+    "playwright",
+    "testing",
+    "e2e",
+    "wallet",
+    "web3",
+    "dapp",
+    "mysten",
+    "tortoiseos",
+    "terrapin"
+  ],
+  "author": "TortoiseOS Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tortoise-os/bun-move.git",
+    "directory": "packages/terrapin"
+  },
+  "homepage": "https://github.com/tortoise-os/bun-move/tree/main/packages/terrapin",
+  "bugs": {
+    "url": "https://github.com/tortoise-os/bun-move/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@playwright/test": "^1.40.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "@types/node": "^20.14.11",
+    "tsup": "^8.0.0",
+    "typescript": "^5.6.2"
+  }
+}

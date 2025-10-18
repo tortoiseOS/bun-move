@@ -1,6 +1,6 @@
 {
-  "name": "@bun-move/burner-wallet",
-  "version": "0.1.0",
+  "name": "@tortoise-os/burner-wallet",
+  "version": "0.2.0",
   "description": "Burner wallet connector for Sui dApp development",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -11,6 +11,10 @@
       "require": "./src/index.ts"
     }
   },
+  "files": [
+    "src",
+    "README.md"
+  ],
   "scripts": {
     "build": "echo 'No build needed - Bun uses TypeScript directly'"
   },
@@ -19,13 +23,28 @@
     "@mysten/sui.js": "^0.54.1"
   },
   "dependencies": {
-    "@bun-move/core": "workspace:*"
+    "@tortoise-os/core": "workspace:*"
   },
   "keywords": [
     "sui",
     "wallet",
     "burner",
-    "development"
+    "development",
+    "testing",
+    "tortoise-os"
   ],
-  "license": "MIT"
+  "author": "TortoiseOS Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tortoise-os/bun-move.git",
+    "directory": "packages/burner-wallet"
+  },
+  "homepage": "https://github.com/tortoise-os/bun-move/tree/main/packages/burner-wallet",
+  "bugs": {
+    "url": "https://github.com/tortoise-os/bun-move/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

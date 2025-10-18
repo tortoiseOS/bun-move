@@ -1,11 +1,11 @@
-# @bun-move/hooks
+# @tortoise-os/hooks
 
 React hooks for Sui blockchain interactions, specifically designed for TortoiseOS dApps.
 
 ## Installation
 
 ```bash
-bun add @bun-move/hooks
+bun add @tortoise-os/hooks
 ```
 
 ## Core Hooks
@@ -15,7 +15,7 @@ bun add @bun-move/hooks
 Get information about deployed contracts.
 
 ```typescript
-import { useDeployedContract } from "@bun-move/hooks";
+import { useDeployedContract } from "@tortoise-os/hooks";
 
 function MyComponent() {
   const contract = useDeployedContract("amm", "localnet");
@@ -30,7 +30,7 @@ function MyComponent() {
 Read data from Move contracts (view functions).
 
 ```typescript
-import { useTortoiseRead } from "@bun-move/hooks";
+import { useTortoiseRead } from "@tortoise-os/hooks";
 
 function PoolInfo({ poolId }) {
   const { data, isLoading } = useTortoiseRead({
@@ -57,7 +57,7 @@ function PoolInfo({ poolId }) {
 Write to Move contracts (transactions).
 
 ```typescript
-import { useTortoiseWrite } from "@bun-move/hooks";
+import { useTortoiseWrite } from "@tortoise-os/hooks";
 
 function SwapButton() {
   const { execute, isLoading, error } = useTortoiseWrite({
@@ -92,7 +92,7 @@ function SwapButton() {
 Watch for contract events.
 
 ```typescript
-import { useTortoiseEvent } from "@bun-move/hooks";
+import { useTortoiseEvent } from "@tortoise-os/hooks";
 
 function SwapEvents() {
   const { events, isLoading } = useTortoiseEvent({
@@ -123,7 +123,7 @@ function SwapEvents() {
 Get SUI or custom coin balance.
 
 ```typescript
-import { useBalance, useSuiBalance } from "@bun-move/hooks";
+import { useBalance, useSuiBalance } from "@tortoise-os/hooks";
 
 function WalletBalance() {
   const { data: sui } = useSuiBalance();
@@ -146,7 +146,7 @@ function WalletBalance() {
 Get objects owned by an address.
 
 ```typescript
-import { useObjectOwned } from "@bun-move/hooks";
+import { useObjectOwned } from "@tortoise-os/hooks";
 
 function MyNFTs() {
   const { data: objects, isLoading } = useObjectOwned({
@@ -172,7 +172,7 @@ function MyNFTs() {
 Track transaction status.
 
 ```typescript
-import { useTransactionStatus } from "@bun-move/hooks";
+import { useTransactionStatus } from "@tortoise-os/hooks";
 
 function TransactionTracker({ digest }) {
   const { data, isLoading } = useTransactionStatus(digest);
@@ -192,7 +192,7 @@ function TransactionTracker({ digest }) {
 Interact with AMM pools.
 
 ```typescript
-import { usePool } from "@bun-move/hooks";
+import { usePool } from "@tortoise-os/hooks";
 
 function PoolInterface({ poolId }) {
   const {
@@ -225,7 +225,7 @@ function PoolInterface({ poolId }) {
 Interact with yield vaults.
 
 ```typescript
-import { useVault } from "@bun-move/hooks";
+import { useVault } from "@tortoise-os/hooks";
 
 function VaultInterface({ vaultId }) {
   const {
@@ -253,7 +253,7 @@ function VaultInterface({ vaultId }) {
 Interact with NFT-backed stablecoin.
 
 ```typescript
-import { useStablecoin } from "@bun-move/hooks";
+import { useStablecoin } from "@tortoise-os/hooks";
 
 function CollateralVault({ vaultId }) {
   const {
@@ -312,7 +312,7 @@ import type {
   CollateralVault,
   UseTortoiseReadConfig,
   UseTortoiseWriteConfig,
-} from "@bun-move/hooks";
+} from "@tortoise-os/hooks";
 ```
 
 ## License

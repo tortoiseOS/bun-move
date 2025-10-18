@@ -1,6 +1,6 @@
 {
-  "name": "@bun-move/ui",
-  "version": "0.1.0",
+  "name": "@tortoise-os/ui",
+  "version": "0.2.0",
   "description": "Magic UI components for TortoiseOS",
   "type": "module",
   "main": "./src/index.ts",
@@ -9,6 +9,10 @@
     ".": "./src/index.ts",
     "./components/*": "./src/components/*.tsx"
   },
+  "files": [
+    "src",
+    "README.md"
+  ],
   "scripts": {
     "lint": "eslint src",
     "format": "prettier --write src"
@@ -27,5 +31,28 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.6.2"
+  },
+  "keywords": [
+    "ui",
+    "components",
+    "react",
+    "magic-ui",
+    "tortoise-os",
+    "tailwind",
+    "framer-motion"
+  ],
+  "author": "TortoiseOS Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tortoise-os/bun-move.git",
+    "directory": "packages/ui"
+  },
+  "homepage": "https://github.com/tortoise-os/bun-move/tree/main/packages/ui",
+  "bugs": {
+    "url": "https://github.com/tortoise-os/bun-move/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

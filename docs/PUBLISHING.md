@@ -24,6 +24,11 @@ UI component library with Magic UI animations.
 
 **Location**: `packages/ui`
 
+### 5. `@bun-move/sui-playwright` - Sui Testing Utilities
+Playwright testing utilities for Sui blockchain dApps.
+
+**Location**: `packages/sui-playwright`
+
 ---
 
 ## 🧪 Testing CLI Locally

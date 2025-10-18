@@ -1,6 +1,6 @@
 {
   "name": "@bun-move/web",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "TortoiseOS Web Frontend",
   "scripts": {
@@ -15,12 +15,12 @@
     "test:e2e:debug": "playwright test --debug"
   },
   "dependencies": {
-    "@bun-move/core": "workspace:*",
-    "@bun-move/sdk": "workspace:*",
-    "@bun-move/hooks": "workspace:*",
-    "@bun-move/components": "workspace:*",
-    "@bun-move/burner-wallet": "workspace:*",
-    "@bun-move/ui": "workspace:*",
+    "@tortoise-os/core": "workspace:*",
+    "@tortoise-os/sdk": "workspace:*",
+    "@tortoise-os/hooks": "workspace:*",
+    "@tortoise-os/components": "workspace:*",
+    "@tortoise-os/burner-wallet": "workspace:*",
+    "@tortoise-os/ui": "workspace:*",
     "@mysten/dapp-kit": "^0.14.0",
     "@mysten/sui.js": "^0.54.1",
     "@radix-ui/themes": "^3.0.0",
@@ -30,6 +30,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@tortoise-os/terrapin": "workspace:*",
     "@playwright/test": "^1.56.0",
     "@types/node": "^20.14.11",
     "@types/react": "^18.3.3",

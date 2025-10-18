@@ -1,18 +1,18 @@
-# create-bun-move
+# @tortoise-os/create-bun-move
 
-CLI tool to create new TortoiseOS DeFi projects on Sui blockchain.
+🐢 CLI tool to create new TortoiseOS DeFi projects on Sui blockchain.
 
 ## 🚀 Quick Start
 
 ```bash
 # Using bunx (recommended)
-bunx create-bun-move my-tortoise-app
+bunx @tortoise-os/create-bun-move my-tortoise-app
 
 # Or using npm
-npx create-bun-move my-tortoise-app
+npx @tortoise-os/create-bun-move my-tortoise-app
 
 # With options
-bunx create-bun-move my-app -t minimal --no-docker
+bunx @tortoise-os/create-bun-move my-app -t minimal --no-docker
 ```
 
 ## 📖 Usage
@@ -20,7 +20,7 @@ bunx create-bun-move my-app -t minimal --no-docker
 ### Interactive Mode
 
 ```bash
-bunx create-bun-move
+bunx @tortoise-os/create-bun-move
 ```
 
 You'll be prompted for:
@@ -50,13 +50,13 @@ Options:
 
 ```bash
 # Full stack project with all features
-bunx create-bun-move my-defi-app
+bunx @tortoise-os/create-bun-move my-defi-app
 
 # Minimal project without Docker
-bunx create-bun-move simple-app -t minimal --no-docker
+bunx @tortoise-os/create-bun-move simple-app -t minimal --no-docker
 
 # Web-only project without Move contracts
-bunx create-bun-move frontend-app --no-sui
+bunx @tortoise-os/create-bun-move frontend-app --no-sui
 ```
 
 ## 🎯 Templates
@@ -89,9 +89,22 @@ my-tortoise-app/
 │   └── ui/           # Magic UI components
 ├── move/             # Sui Move contracts
 ├── docker/           # Docker configs (if enabled)
+├── .clauderc         # AI assistant instructions (Bun-first!)
+├── .cursorrules      # Cursor IDE rules
 ├── package.json
+├── .gitignore
 └── README.md
 ```
+
+### 🤖 AI Assistant Support
+
+Every project includes `.clauderc` and `.cursorrules` files that instruct Claude, Cursor, and other AI coding assistants to:
+- ✅ Always use `bun` instead of npm/yarn/pnpm
+- ✅ Use `bunx` instead of npx
+- ✅ Follow TortoiseOS best practices
+- ✅ Use proper Sui Move commands
+
+This ensures AI assistants give you bun-first suggestions automatically!
 
 ## 🛠️ After Creation
 
@@ -154,7 +167,7 @@ If you enable Magic UI, you get:
 
 ## 📚 Documentation
 
-- [TortoiseOS Documentation](https://github.com/yourusername/bun-move)
+- [TortoiseOS Documentation](https://github.com/tortoise-os/bun-move)
 - [Sui Documentation](https://docs.sui.io)
 - [Move Language Guide](https://move-book.com)
 

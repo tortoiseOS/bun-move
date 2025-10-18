@@ -1,6 +1,6 @@
 {
-  "name": "@bun-move/core",
-  "version": "0.1.0",
+  "name": "@tortoise-os/core",
+  "version": "0.2.0",
   "description": "Core utilities and types for TortoiseOS",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -11,6 +11,10 @@
       "require": "./src/index.ts"
     }
   },
+  "files": [
+    "src",
+    "README.md"
+  ],
   "scripts": {
     "build": "echo 'No build needed - Bun uses TypeScript directly'",
     "test": "bun test",
@@ -21,7 +25,22 @@
     "sui",
     "move",
     "utilities",
-    "tortoise-os"
+    "tortoise-os",
+    "web3",
+    "blockchain"
   ],
-  "license": "MIT"
+  "author": "TortoiseOS Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tortoise-os/bun-move.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/tortoise-os/bun-move/tree/main/packages/core",
+  "bugs": {
+    "url": "https://github.com/tortoise-os/bun-move/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

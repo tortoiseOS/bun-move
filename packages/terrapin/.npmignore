@@ -1,0 +1,17 @@
+# Source files
+src/
+tsconfig.json
+
+# Development
+node_modules/
+*.log
+.DS_Store
+
+# Testing
+coverage/
+.nyc_output/
+
+# Build artifacts
+*.tsbuildinfo
+
+# Only ship dist/

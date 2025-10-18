@@ -1,7 +1,7 @@
 {
-  "name": "create-bun-move",
-  "version": "0.1.0",
-  "description": "CLI to create new TortoiseOS DeFi projects on Sui",
+  "name": "@tortoise-os/create-bun-move",
+  "version": "0.2.0",
+  "description": "🐢 CLI to create new TortoiseOS DeFi projects on Sui blockchain",
   "type": "module",
   "bin": {
     "create-bun-move": "./dist/index.js"
@@ -20,10 +20,14 @@
     "move",
     "defi",
     "web3",
-    "tortoise-os",
+    "tortoiseos",
     "blockchain",
     "cli",
-    "generator"
+    "generator",
+    "scaffold",
+    "boilerplate",
+    "bun",
+    "create"
   ],
   "dependencies": {
     "commander": "^11.1.0",
@@ -43,9 +47,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/bun-move.git",
+    "url": "https://github.com/tortoise-os/bun-move.git",
     "directory": "packages/create-bun-move"
   },
+  "homepage": "https://github.com/tortoise-os/bun-move/tree/main/packages/create-bun-move",
+  "bugs": {
+    "url": "https://github.com/tortoise-os/bun-move/issues"
+  },
   "license": "MIT",
-  "author": "TortoiseOS Team"
+  "author": "TortoiseOS Team",
+  "publishConfig": {
+    "access": "public"
+  }
 }

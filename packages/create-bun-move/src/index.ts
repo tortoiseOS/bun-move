@@ -144,7 +144,7 @@ program
       console.log(chalk.white(`  bun run dev\n`));
 
       console.log(chalk.cyan("🚀 Happy building with TortoiseOS!\n"));
-      console.log(chalk.gray("📖 Documentation: https://github.com/yourusername/bun-move"));
+      console.log(chalk.gray("📖 Documentation: https://github.com/tortoise-os/bun-move"));
       console.log(chalk.gray("💬 Discord: https://discord.gg/tortoise-os\n"));
 
     } catch (error) {
@@ -250,7 +250,7 @@ ${options.magicui ? "│   └── ui/           # Magic UI components\n" : ""
 
 ## Documentation
 
-- [TortoiseOS Docs](https://github.com/yourusername/bun-move)
+- [TortoiseOS Docs](https://github.com/tortoise-os/bun-move)
 - [Sui Documentation](https://docs.sui.io)
 
 ## License
@@ -291,6 +291,90 @@ ${options.sui ? "build/\n.sui/\n" : ""}
 ${options.docker ? ".docker/\n" : ""}`;
 
   writeFileSync(join(projectPath, ".gitignore"), gitignore);
+
+  // Create .clauderc for AI assistant instructions
+  const clauderc = `# TortoiseOS Project - AI Assistant Instructions
+
+## Package Manager: BUN ONLY
+
+**CRITICAL**: This project uses Bun as its package manager and runtime.
+
+### Required Commands:
+- ✅ \`bun install\` (NOT npm install)
+- ✅ \`bun add <package>\` (NOT npm install)
+- ✅ \`bun remove <package>\` (NOT npm uninstall)
+- ✅ \`bunx <command>\` (NOT npx)
+- ✅ \`bun run <script>\` (NOT npm run)
+- ✅ \`bun test\` (NOT npm test)
+- ✅ \`bun <file.ts>\` (direct TypeScript execution)
+
+### ❌ NEVER Use:
+- npm install
+- npm i
+- npm run
+- npx
+- yarn
+- pnpm
+
+### Project Stack:
+- **Runtime**: Bun >= 1.1.0
+- **Framework**: Next.js 14${options.template === "full" ? "\n- **API**: Express with Bun" : ""}${options.sui ? "\n- **Blockchain**: Sui Move" : ""}${options.magicui ? "\n- **UI**: Magic UI + Tailwind CSS" : ""}${options.docker ? "\n- **Containers**: Docker Compose" : ""}
+- **Testing**: Playwright${options.sui ? " + @tortoiseos/terrapin" : ""}
+
+### Sui-Specific Guidelines:
+${options.sui ? `- Use \`task move:build\` for Move contract compilation
+- Use \`task sui:init\` for Sui setup
+- All Sui commands run in Docker container
+- Test wallet: Use unsafe burner wallet in dev mode
+` : ""}
+### Code Style:
+- TypeScript strict mode enabled
+- Use async/await (Bun has top-level await)
+- Prefer Bun APIs over Node.js when available
+- Use workspace protocol: "workspace:*" for local packages
+
+### Commands Reference:
+\`\`\`bash
+# Development
+bun run dev              # Start dev server
+
+# Building
+bun run build            # Build all apps
+
+# Testing
+bun test                 # Run unit tests
+bun run test:e2e        # Run E2E tests${options.sui ? "\n\n# Sui/Move\ntask move:build          # Compile Move contracts\ntask sui:init            # Initialize Sui" : ""}${options.docker ? "\n\n# Docker\ndocker compose up -d     # Start services\ndocker compose down      # Stop services" : ""}
+\`\`\`
+
+### When suggesting installations:
+Always use: \`bun add <package>\`
+Dev dependencies: \`bun add -D <package>\`
+Global tools: \`bunx <tool>\` (no installation needed!)
+
+---
+🐢 **TortoiseOS** - Slow, steady, and bun-powered!
+`;
+
+  writeFileSync(join(projectPath, ".clauderc"), clauderc);
+
+  // Also create .cursorrules for Cursor IDE
+  const cursorrules = `# TortoiseOS Project Rules
+
+## Package Manager
+- Always use Bun: \`bun install\`, \`bun add\`, \`bunx\`
+- Never suggest npm, yarn, or pnpm
+
+## Stack
+- Bun runtime${options.sui ? "\n- Sui blockchain" : ""}
+- TypeScript strict mode
+- Next.js 14${options.magicui ? "\n- Magic UI components" : ""}
+
+## Commands
+- Use \`bun run <script>\` for package scripts
+- Use \`bunx <command>\` instead of npx${options.sui ? "\n- Use \`task move:build\` for Sui Move contracts" : ""}
+`;
+
+  writeFileSync(join(projectPath, ".cursorrules"), cursorrules);
 
   console.log(chalk.green(`\n✓ Created ${options.name}`));
 }

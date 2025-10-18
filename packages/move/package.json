@@ -1,6 +1,6 @@
 {
-  "name": "@bun-move/move",
-  "version": "0.1.0",
+  "name": "@tortoise-os/move",
+  "version": "0.2.0",
   "description": "Sui Move smart contracts for TortoiseOS",
   "main": "./deployedContracts.ts",
   "types": "./deployedContracts.ts",
@@ -16,6 +16,11 @@
       "require": "./deployedContracts.ts"
     }
   },
+  "files": [
+    "deployedContracts.ts",
+    "*/Move.toml",
+    "*/sources/**/*.move"
+  ],
   "scripts": {
     "build": "task move:build",
     "test": "task move:test",
@@ -25,7 +30,22 @@
     "sui",
     "move",
     "smart-contracts",
-    "tortoise-os"
+    "tortoise-os",
+    "defi",
+    "blockchain"
   ],
-  "license": "MIT"
+  "author": "TortoiseOS Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tortoise-os/bun-move.git",
+    "directory": "packages/move"
+  },
+  "homepage": "https://github.com/tortoise-os/bun-move/tree/main/packages/move",
+  "bugs": {
+    "url": "https://github.com/tortoise-os/bun-move/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

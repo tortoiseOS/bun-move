@@ -10,7 +10,9 @@
       "Bash(bun add:*)",
       "Bash(bun install:*)",
       "Bash(task move:build:*)",
-      "Bash(sui move build:*)"
+      "Bash(sui move build:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

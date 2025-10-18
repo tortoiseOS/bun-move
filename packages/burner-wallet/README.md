@@ -1,4 +1,4 @@
-# @bun-move/burner-wallet
+# @tortoise-os/burner-wallet
 
 Burner wallet for Sui dApp local development. Auto-creates and persists wallets for testing.
 
@@ -12,7 +12,7 @@ Burner wallet for Sui dApp local development. Auto-creates and persists wallets 
 ## Installation
 
 ```bash
-bun add @bun-move/burner-wallet
+bun add @tortoise-os/burner-wallet
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ bun add @bun-move/burner-wallet
 ### Basic Usage
 
 ```typescript
-import { createBurnerWallet } from "@bun-move/burner-wallet";
+import { createBurnerWallet } from "@tortoise-os/burner-wallet";
 
 const wallet = createBurnerWallet();
 
@@ -33,7 +33,7 @@ await wallet.requestFunds();
 ### Singleton Pattern
 
 ```typescript
-import { getBurnerWallet } from "@bun-move/burner-wallet";
+import { getBurnerWallet } from "@tortoise-os/burner-wallet";
 
 // Always returns same instance
 const wallet = getBurnerWallet();
@@ -52,7 +52,7 @@ const wallet = createBurnerWallet({
 ### With Sui dApp Kit
 
 ```typescript
-import { getBurnerWallet } from "@bun-move/burner-wallet";
+import { getBurnerWallet } from "@tortoise-os/burner-wallet";
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 import { SuiClient } from "@mysten/sui.js/client";
 
@@ -117,7 +117,7 @@ Gets singleton burner wallet instance.
 
 ```typescript
 import { useEffect, useState } from "react";
-import { getBurnerWallet } from "@bun-move/burner-wallet";
+import { getBurnerWallet } from "@tortoise-os/burner-wallet";
 
 export function useBurnerWallet() {
   const [wallet, setWallet] = useState<ReturnType<typeof getBurnerWallet>>();
