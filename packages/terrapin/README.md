@@ -19,6 +19,9 @@ Testing Sui dApps is different from Ethereum dApps:
 
 ✅ **Easy wallet connection testing** - Connect/disconnect with one line
 ✅ **Transaction helpers** - Wait for transactions, check status
+✅ **Transaction Builders** - Fluent API for complex multi-step transactions
+✅ **Event Listening** - Wait for and verify blockchain events
+✅ **Network Mocking** - Mock RPC responses for deterministic tests
 ✅ **Network detection** - Verify correct network (localnet/devnet/etc)
 ✅ **Custom Matchers** - Sui-specific assertions for cleaner tests
 ✅ **Pre-configured Test Wallets** - Realistic wallet presets (whale, normie, empty, etc)
@@ -635,9 +638,9 @@ We've organized upcoming features by priority based on impact, effort, and ROI:
 | 🔥 **P0** | **Custom Matchers** | ⭐⭐⭐⭐⭐ | Medium | ⚡⚡⚡⚡⚡ | ✅ **Done** |
 | 🔥 **P0** | **Pre-Configured Wallets** | ⭐⭐⭐⭐⭐ | Low | ⚡⚡⚡⚡⚡ | ✅ **Done** |
 | 🔥 **P0** | **CI/CD Templates** | ⭐⭐⭐⭐ | Low | ⚡⚡⚡⚡⚡ | ✅ **Done** |
-| 🚀 **P1** | Transaction Builders | ⭐⭐⭐⭐⭐ | Medium | ⚡⚡⚡⚡⭐ | 📋 Planned |
-| 🚀 **P1** | Event Listening | ⭐⭐⭐⭐ | Medium | ⚡⚡⚡⚡ | 📋 Planned |
-| 🚀 **P1** | Network Mocking | ⭐⭐⭐⭐ | High | ⚡⚡⚡ | 📋 Planned |
+| 🚀 **P1** | **Transaction Builders** | ⭐⭐⭐⭐⭐ | Medium | ⚡⚡⚡⚡⭐ | ✅ **Done** |
+| 🚀 **P1** | **Event Listening** | ⭐⭐⭐⭐ | Medium | ⚡⚡⚡⚡ | ✅ **Done** |
+| 🚀 **P1** | **Network Mocking** | ⭐⭐⭐⭐ | High | ⚡⚡⚡ | ✅ **Done** |
 | 💡 **P2** | Visual Regression | ⭐⭐⭐ | High | ⚡⚡⚡ | 🤔 Considering |
 | 💡 **P2** | Multi-Wallet Testing | ⭐⭐⭐⭐ | High | ⚡⚡ | 🤔 Considering |
 | 💡 **P2** | Performance Benchmarking | ⭐⭐⭐ | Medium | ⚡⚡⚡ | 🤔 Considering |
@@ -663,36 +666,209 @@ These provide the highest ROI with minimal effort:
 - GitHub Actions and GitLab CI
 - Includes Sui localnet and test reporting
 
-### High-Impact Features (P1) - 📋 Planned
+### High-Impact Features (P1) - ✅ Completed
 
-**Transaction Builders**
-```typescript
-await suiWallet.transaction()
-  .transfer('0x123...', 100_000)
-  .split(coin, [50, 50])
-  .execute();
-```
-- Simplifies complex transactions
-- Type-safe transaction building
-- Reduces manual PTB construction
+**✅ Transaction Builders**
 
-**Event Listening**
-```typescript
-await suiWallet.waitForEvent('Transfer', { timeout: 5000 });
-await expect(page).toHaveEmittedEvent('ObjectCreated');
-```
-- Wait for specific blockchain events
-- Verify event data
-- Better transaction verification
+Build complex Sui transactions with a fluent, type-safe API:
 
-**Network Mocking**
 ```typescript
-await suiWallet.mockNetwork({
-  rpc: 'http://localhost:9000',
-  chainId: 'local-test'
+import { test } from '@tortoise-os/terrapin';
+import { createTransactionBuilder } from '@tortoise-os/terrapin';
+
+test('complex transaction flow', async ({ page, suiWallet }) => {
+  await page.goto('/');
+  await suiWallet.connect();
+
+  const txBuilder = createTransactionBuilder(page, suiWallet);
+
+  // Build and execute a multi-step transaction
+  const digest = await txBuilder
+    .transfer('0x123...', 100_000_000)  // Transfer 0.1 SUI
+    .split('0xabc...', [50_000_000, 50_000_000])  // Split coin
+    .merge('0xdef...', ['0x111...', '0x222...'])  // Merge coins
+    .moveCall('0x2::coin::transfer', ['0x2::sui::SUI'], ['0xabc', '0x456'])
+    .execute();
+
+  console.log('Transaction digest:', digest);
+
+  // Or execute and wait for confirmations
+  await txBuilder.reset()
+    .transfer('0x789...', 200_000_000)
+    .executeAndWait(2);  // Wait for 2 confirmations
 });
 ```
-- Faster tests without real network
+
+**Features:**
+- Fluent, chainable API
+- Type-safe transaction building
+- Reduces manual PTB construction
+- Supports transfer, split, merge, moveCall operations
+- Custom transaction steps via `.custom()`
+
+---
+
+**✅ Event Listening**
+
+Wait for and verify blockchain events in your tests:
+
+```typescript
+import { test } from '@tortoise-os/terrapin';
+import { createEventListener } from '@tortoise-os/terrapin';
+
+test('wait for transfer event', async ({ page, suiWallet }) => {
+  await page.goto('/');
+  await suiWallet.connect();
+
+  const listener = createEventListener(page);
+
+  // Execute transaction
+  await page.click('[data-testid="send-button"]');
+
+  // Wait for Transfer event
+  const event = await listener.waitForEvent('Transfer', {
+    timeout: 5000,
+    filter: (e) => e.parsedJson?.amount > 100_000_000
+  });
+
+  console.log('Transfer event:', event);
+  expect(event.sender).toBe('0x123...');
+
+  // Check all events
+  const allEvents = listener.getEvents();
+  console.log('Total events:', allEvents.length);
+
+  // Get specific events
+  const transfers = listener.getEvents('Transfer');
+  const lastTransfer = listener.getLastEvent('Transfer');
+
+  // Check if event occurred
+  expect(listener.hasEvent('Transfer')).toBe(true);
+  expect(listener.getEventCount('Transfer')).toBeGreaterThan(0);
+});
+
+test('register event callbacks', async ({ page, suiWallet }) => {
+  const listener = createEventListener(page);
+
+  // Register callback for specific event
+  listener.on('Transfer', (event) => {
+    console.log('Transfer detected:', event);
+  });
+
+  // Register wildcard callback for all events
+  listener.on('*', (event) => {
+    console.log('Event:', event.type);
+  });
+
+  // Execute actions...
+  await page.click('[data-testid="send-button"]');
+
+  // Wait for multiple events
+  const events = await listener.waitForEvents(['Transfer', 'ObjectCreated']);
+  expect(events).toHaveLength(2);
+});
+```
+
+**Features:**
+- Wait for specific blockchain events
+- Filter events with custom predicates
+- Register event callbacks
+- Track event history
+- Support for wildcard listeners
+
+---
+
+**✅ Network Mocking**
+
+Mock Sui RPC responses for faster, deterministic tests:
+
+```typescript
+import { test } from '@tortoise-os/terrapin';
+import { createNetworkMock } from '@tortoise-os/terrapin';
+
+test('mock balance response', async ({ page }) => {
+  const mock = createNetworkMock(page);
+
+  // Mock balance for a specific address
+  mock.mockBalance('0x123...', 1_000_000_000);  // 1 SUI
+
+  // Mock transaction result
+  mock.mockTransaction('0xabc123', 'success');
+
+  // Mock gas price
+  mock.mockGasPrice(2000);
+
+  // Enable mocking
+  await mock.enable();
+
+  // Now all RPC requests will be intercepted and mocked
+  await page.goto('/');
+  // Your app will see the mocked balance!
+});
+
+test('mock custom RPC responses', async ({ page }) => {
+  const mock = createNetworkMock(page);
+
+  // Mock any RPC method
+  mock.mockRpcResponse('sui_getBalance', {
+    totalBalance: '5000000000',
+    coinType: '0x2::sui::SUI',
+    coinObjectCount: 5
+  });
+
+  mock.mockRpcResponse('sui_getObject', {
+    objectId: '0xobj123',
+    owner: { AddressOwner: '0x123...' },
+    type: '0x2::coin::Coin<0x2::sui::SUI>'
+  });
+
+  await mock.enable();
+  await page.goto('/');
+
+  // Verify requests were intercepted
+  expect(mock.wasMethodCalled('sui_getBalance')).toBe(true);
+  expect(mock.getCallCount('sui_getBalance')).toBeGreaterThan(0);
+
+  const requests = mock.getInterceptedRequests('sui_getBalance');
+  console.log('Balance requests:', requests);
+});
+
+test('mock transaction failure', async ({ page }) => {
+  const mock = createNetworkMock(page);
+
+  // Mock a failed transaction
+  mock.mockTransactionFailure('Insufficient gas');
+
+  await mock.enable();
+  await page.goto('/');
+
+  // Test error handling...
+});
+
+test('mock with chaining', async ({ page }) => {
+  const mock = createNetworkMock(page);
+
+  // Chain multiple mocks
+  await mock
+    .mockBalance('0x123...', 1_000_000_000)
+    .mockTransaction('0xabc', 'success')
+    .mockGasPrice(1500)
+    .mockObject('0xobj', '0x123', '0x2::sui::SUI')
+    .enable();
+
+  await page.goto('/');
+
+  // Clean up
+  await mock.disable();
+  mock.clearMocks();
+});
+```
+
+**Features:**
+- Mock any Sui RPC method
+- Mock balances, transactions, objects, gas price
+- Intercept and verify RPC requests
+- Support for transaction failures
 - Deterministic test behavior
 - Offline testing support
 
@@ -750,6 +926,15 @@ await suiWallet.mockNetwork({
 ---
 
 ## Changelog
+
+### v0.5.0 (2025-10-18)
+
+- ✨ **P1 Features Complete!**
+- ✨ Transaction Builders - Fluent API for complex transactions
+- ✨ Event Listening - Wait for and verify blockchain events
+- ✨ Network Mocking - Mock RPC responses for deterministic tests
+- 📚 Comprehensive tests for all P1 features
+- 📚 Updated documentation with P1 usage examples
 
 ### v0.2.0 (2025-10-18)
 

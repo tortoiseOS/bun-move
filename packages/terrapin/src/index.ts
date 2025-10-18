@@ -376,3 +376,67 @@ export type {
   TestWalletBalance,
   TestWalletNFT,
 } from './test-wallets';
+
+/**
+ * Export Transaction Builder utilities (P1)
+ *
+ * @example
+ * ```typescript
+ * import { createTransactionBuilder } from '@tortoise-os/terrapin';
+ *
+ * const txBuilder = createTransactionBuilder(page, suiWallet);
+ * await txBuilder
+ *   .transfer('0x123...', 100_000_000)
+ *   .execute();
+ * ```
+ */
+export {
+  createTransactionBuilder,
+  SuiTransactionBuilder,
+} from './transaction-builder';
+export type {
+  TransactionStep,
+  TransactionBuilderOptions,
+} from './transaction-builder';
+
+/**
+ * Export Event Listener utilities (P1)
+ *
+ * @example
+ * ```typescript
+ * import { createEventListener } from '@tortoise-os/terrapin';
+ *
+ * const listener = createEventListener(page);
+ * await listener.waitForEvent('Transfer');
+ * const events = listener.getEvents();
+ * ```
+ */
+export {
+  createEventListener,
+  SuiEventListener,
+} from './event-listener';
+export type {
+  SuiEvent,
+  EventListenerOptions,
+} from './event-listener';
+
+/**
+ * Export Network Mocking utilities (P1)
+ *
+ * @example
+ * ```typescript
+ * import { createNetworkMock } from '@tortoise-os/terrapin';
+ *
+ * const mock = createNetworkMock(page);
+ * await mock.mockBalance('0x123...', 1_000_000_000);
+ * await mock.enable();
+ * ```
+ */
+export {
+  createNetworkMock,
+  SuiNetworkMock,
+} from './network-mock';
+export type {
+  NetworkMockConfig,
+  MockResponse,
+} from './network-mock';

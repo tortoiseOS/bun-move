@@ -1,6 +1,6 @@
 {
   "name": "@tortoise-os/terrapin",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "description": "Where tortoises meet the water - Playwright testing utilities for Sui blockchain dApps",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

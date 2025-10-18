@@ -1,6 +1,6 @@
 {
   "name": "@tortoise-os/create-bun-move",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "🐢 CLI to create new TortoiseOS DeFi projects on Sui blockchain",
   "type": "module",
   "bin": {
